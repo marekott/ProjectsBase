@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectsBaseShared", "ProjectsBaseShared\ProjectsBaseShared.csproj", "{6B3D113B-5568-4717-8093-589117F8C1B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectsBaseSharedTests", "ProjectsBaseSharedTests\ProjectsBaseSharedTests.csproj", "{EE97D1DB-4384-43AE-B8FB-A9E3F1A01D2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6B3D113B-5568-4717-8093-589117F8C1B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B3D113B-5568-4717-8093-589117F8C1B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B3D113B-5568-4717-8093-589117F8C1B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE97D1DB-4384-43AE-B8FB-A9E3F1A01D2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE97D1DB-4384-43AE-B8FB-A9E3F1A01D2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE97D1DB-4384-43AE-B8FB-A9E3F1A01D2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE97D1DB-4384-43AE-B8FB-A9E3F1A01D2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

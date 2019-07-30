@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProjectsBaseShared.Models
 {
-    public class Project
+    public class Project : IEquatable<Project>
     {
         public Guid ProjectId { get; set; }
         [Required, StringLength(100), DisplayName("Name")]
@@ -13,5 +13,11 @@ namespace ProjectsBaseShared.Models
         public DateTime ProjectStartDate { get; set; }
         [DisplayName("End date")]
         public DateTime ProjectEndDate { get; set; }
+
+        public bool Equals(Project other)
+        {
+            throw new NotImplementedException();
+            //return this.ProjectId == other?.ProjectId;
+        }
     }
 }
