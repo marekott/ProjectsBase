@@ -7,9 +7,10 @@ namespace ProjectsBaseSharedTests.Models
     [TestFixture]
     public class AuditorTests
     {
-        private readonly Auditor _baseAuditor;
+        private Auditor _baseAuditor;
 
-        public AuditorTests()
+        [SetUp]
+        public void Init()
         {
             _baseAuditor = new Auditor()
             {

@@ -7,9 +7,10 @@ namespace ProjectsBaseSharedTests.Models
     [TestFixture]
     public class ProjectTests
     {
-        private readonly Project _baseProject;
+        private Project _baseProject;
 
-        public ProjectTests()
+        [SetUp]
+        public void Init()
         {
             _baseProject = new Project()
             {
