@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectsBaseShared.Models
 {
@@ -11,6 +13,12 @@ namespace ProjectsBaseShared.Models
         public string AuditorName { get; set; }
         [Required, DisplayName("Surname")]
         public string AuditorSurname { get; set; }
+        public ICollection<AuditTeam> Projects { get; set; }
+
+        public Auditor()
+        {
+            Projects = new List<AuditTeam>();
+        }
 
         public bool Equals(Auditor other)
         {
