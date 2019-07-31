@@ -16,8 +16,7 @@ namespace ProjectsBaseShared.Models
 
         public bool Equals(Project other)
         {
-            throw new NotImplementedException();
-            //return this.ProjectId == other?.ProjectId;
+            return this.ProjectId == other?.ProjectId;
         }
     }
 }
