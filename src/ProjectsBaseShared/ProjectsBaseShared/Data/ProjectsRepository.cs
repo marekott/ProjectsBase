@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using ProjectsBaseShared.Models;
 
@@ -13,14 +14,16 @@ namespace ProjectsBaseShared.Data
 
         public override Project Get(Guid guid, bool includeRelatedEntities = true)
         {
-            var project = Context.Projects.AsQueryable();
+            var projects = Context.Projects.AsQueryable();
 
             if (includeRelatedEntities)
             {
-                throw new NotImplementedException();
+                projects = projects
+                    .Include(p => p.Client)
+                    .Include(p => p.Auditors);
             }
 
-            return project
+            return projects
                 .SingleOrDefault(p => p.ProjectId == guid);
         }
 
