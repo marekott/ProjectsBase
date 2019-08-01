@@ -22,7 +22,7 @@ namespace ProjectsBaseShared.Data
             Context.SaveChanges();
         }
 
-        public void Update(TEntity entity)
+        public void Edit(TEntity entity)
         {
             throw new NotImplementedException();
             //Context.Entry(entity).State = EntityState.Modified;
