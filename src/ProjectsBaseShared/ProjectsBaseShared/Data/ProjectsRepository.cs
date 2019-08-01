@@ -20,7 +20,7 @@ namespace ProjectsBaseShared.Data
             {
                 projects = projects
                     .Include(p => p.Client)
-                    .Include(p => p.Auditors);
+                    .Include(p => p.Auditors.Select(a => a.Auditor));
             }
 
             return projects

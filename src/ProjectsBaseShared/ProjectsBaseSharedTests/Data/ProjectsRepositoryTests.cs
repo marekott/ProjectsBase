@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using NUnit.Framework;
 using ProjectsBaseShared.Data;
 using ProjectsBaseShared.Models;
@@ -21,13 +22,11 @@ namespace ProjectsBaseSharedTests.Data
         private const string AuditorName = "Marek";
         private const string AuditorSurname = "Ott";
 
-        private Context _context;
-        private ProjectsRepository _projectsRepository;
 
         [Test]
         public void ProjectsRepositoryCrud()
         {
-            _projectId = Create();
+            _projectId = Create(ProjectName, _projectStartDate, _projectEndDate, ClientName);
             GetOnlyProjectTest();
             GetOnlyProjectWhichNotExistTest();
             GetProjectAndRelatedTest();
@@ -36,108 +35,104 @@ namespace ProjectsBaseSharedTests.Data
             DeleteTest();
         }
 
-        private Guid Create()
+        private Guid Create(string projectName, DateTime projectStartDate, DateTime projectEndDate, string clientName)
         {
-            _context = new Context();
-            _context.Database.Log = (message) => Debug.WriteLine(message);
-            _projectsRepository = new ProjectsRepository(_context);
-            _project = InitProject();
-
-            _projectsRepository.Add(_project);
-
-            Assert.AreNotEqual(Guid.Empty, _project.ProjectId, "Empty guid was return");
-
-            return _project.ProjectId;
-        }
-
-        private Project InitProject()
-        {
-            var project = new Project()
+            using (var context = new Context())
             {
-                ProjectName = ProjectName,
-                ProjectStartDate = _projectStartDate,
-                ProjectEndDate = _projectEndDate,
-                Client = InitClient()
-            };
-            project.Auditors.Add(InitAuditTeam());
-            project.Auditors.Add(InitAuditTeam());
+                var projectsRepository = new ProjectsRepository(context);
+                context.Database.Log = (message) => Debug.WriteLine(message);
+                _project = ProjectDataMock.InitProject(projectName, projectStartDate, projectEndDate, clientName, AuditorName, AuditorSurname);
 
-            return project;
+                projectsRepository.Add(_project);
+
+                Assert.AreNotEqual(Guid.Empty, _project.ProjectId, "Empty guid was return");
+
+                return _project.ProjectId;
+            }
+            
         }
-
-        private Client InitClient()
-        {
-            return new Client()
-            {
-                ClientName = ClientName
-            };
-        }
-
-        private AuditTeam InitAuditTeam()
-        {
-            return new AuditTeam()
-            {
-                Auditor = InitAuditor()
-            };
-        }
-
-        private Auditor InitAuditor()
-        {
-            return new Auditor()
-            {
-                AuditorName = AuditorName,
-                AuditorSurname = AuditorSurname + new Random().Next()
-            };
-        }
-
 
         public void GetOnlyProjectTest()
         {
-            var downloadedProject = _projectsRepository.Get(_projectId, false);
+            using (var context = new Context())
+            {
+                var projectsRepository = new ProjectsRepository(context);
 
-            Assert.True(downloadedProject.Equals(_project), "GetOnlyProjectTest returns project with different guid");
-            Assert.True(downloadedProject.ProjectName == ProjectName, "GetOnlyProjectTest returns project with different name");
-            Assert.True(downloadedProject.ProjectStartDate == _projectStartDate, "GetOnlyProjectTest returns project with different start date");
-            Assert.True(downloadedProject.ProjectEndDate == _projectEndDate, "GetOnlyProjectTest returns project with different end date");
-            Assert.True(downloadedProject.Auditors.Count == 0, "GetOnlyProjectTest returns related auditors");
-            Assert.IsNull(downloadedProject.Client, "GetOnlyProjectTest returns related client");
+                var downloadedProject = projectsRepository.Get(_projectId, false);
+
+                Assert.True(downloadedProject.Equals(_project), "GetOnlyProjectTest returns project with different guid");
+                Assert.AreEqual(ProjectName, downloadedProject.ProjectName, "GetOnlyProjectTest returns project with different name");
+                Assert.AreEqual(_projectStartDate.Date, downloadedProject.ProjectStartDate.Date, "GetOnlyProjectTest returns project with different start date");
+                Assert.AreEqual(_projectEndDate.Date, downloadedProject.ProjectEndDate.Date, "GetOnlyProjectTest returns project with different end date");
+                Assert.AreEqual(0, downloadedProject.Auditors.Count, "GetOnlyProjectTest returns related auditors");
+                Assert.IsNull(downloadedProject.Client, "GetOnlyProjectTest returns related client");
+            }
+            
         }
 
         public void GetOnlyProjectWhichNotExistTest()
         {
-            var downloadedProject = _projectsRepository.Get(Guid.Empty, false);
+            using (var context = new Context())
+            {
+                var projectsRepository = new ProjectsRepository(context);
 
-            Assert.IsNull(downloadedProject, "Database contains record with empty guid.");
+                var downloadedProject = projectsRepository.Get(Guid.Empty, false);
+
+                Assert.IsNull(downloadedProject, "Database contains record with empty guid.");
+            }
         }
 
         public void GetProjectAndRelatedTest()
         {
-            var downloadedProject = _projectsRepository.Get(_projectId);
+            using (var context = new Context())
+            {
+                var projectsRepository = new ProjectsRepository(context);
 
-            Assert.True(downloadedProject.Equals(_project), "GetProjectAndRelatedTest returns project with different guid");
-            Assert.True(downloadedProject.ProjectName == ProjectName, "GetProjectAndRelatedTest returns project with different name");
-            Assert.True(downloadedProject.ProjectStartDate == _projectStartDate, "GetProjectAndRelatedTest returns project with different start date");
-            Assert.True(downloadedProject.ProjectEndDate == _projectEndDate, "GetProjectAndRelatedTest returns project with different end date");
-            Assert.True(downloadedProject.Auditors.Count != 0, "GetProjectAndRelatedTest does not returns related auditors");
-            Assert.IsNotNull(downloadedProject.Client, "GetProjectAndRelatedTest does not return related client");
+                var downloadedProject = projectsRepository.Get(_projectId);
+
+                Assert.True(downloadedProject.Equals(_project), "GetProjectAndRelatedTest returns project with different guid");
+                Assert.AreEqual(ProjectName, downloadedProject.ProjectName , "GetProjectAndRelatedTest returns project with different name");
+                Assert.AreEqual(_projectStartDate.Date, downloadedProject.ProjectStartDate.Date , "GetProjectAndRelatedTest returns project with different start date");
+                Assert.AreEqual(_projectEndDate.Date, downloadedProject.ProjectEndDate.Date, "GetProjectAndRelatedTest returns project with different end date");
+                Assert.AreEqual(2, downloadedProject.Auditors.Count, "GetProjectAndRelatedTest does not returns related auditors");
+                Assert.IsNotNull(downloadedProject.Auditors.ToList()[0].Auditor);
+                Assert.AreEqual(AuditorName, downloadedProject.Auditors.ToList()[0].Auditor.AuditorName);
+                Assert.AreEqual(AuditorSurname, downloadedProject.Auditors.ToList()[0].Auditor.AuditorSurname);
+                Assert.IsNotNull(downloadedProject.Auditors.ToList()[1].Auditor);
+                Assert.AreEqual(AuditorName, downloadedProject.Auditors.ToList()[1].Auditor.AuditorName);
+                Assert.AreEqual(AuditorSurname, downloadedProject.Auditors.ToList()[1].Auditor.AuditorSurname);
+                Assert.AreEqual(2, downloadedProject.Auditors.Select(a => a.Auditor.AuditorId).Distinct().Count());
+                Assert.IsNotNull(downloadedProject.Client, "GetProjectAndRelatedTest does not return related client");
+                Assert.AreEqual(ClientName, downloadedProject.Client.ClientName, "GetProjectAndRelatedTest returned wrong client name");
+            }
         }
 
         public void GetProjectAndRelatedWhichNotExistTest()
         {
-            var downloadedProject = _projectsRepository.Get(Guid.Empty);
+            using (var context = new Context())
+            {
+                var projectsRepository = new ProjectsRepository(context);
 
-            Assert.IsNull(downloadedProject, "Database contains record with empty guid.");
+                var downloadedProject = projectsRepository.Get(Guid.Empty);
+
+                Assert.IsNull(downloadedProject, "Database contains record with empty guid.");
+            }
         }
 
         public void DeleteTest()
         {
-            var downloadedProject = _projectsRepository.Get(_projectId, false);
-            Assert.True(downloadedProject != null, "Project does not exist before delete.");
+            using (var context = new Context())
+            {
+                var projectsRepository = new ProjectsRepository(context);
 
-            _projectsRepository.Delete(_project);
+                var downloadedProject = projectsRepository.Get(_projectId, false);
+                Assert.True(downloadedProject != null, "Project does not exist before delete.");
 
-            downloadedProject = _projectsRepository.Get(_projectId, false);
-            Assert.True(downloadedProject == null, "Project exists after delete.");
+                projectsRepository.Delete(downloadedProject);
+
+                downloadedProject = projectsRepository.Get(_projectId, false);
+                Assert.True(downloadedProject == null, "Project exists after delete.");
+            }
         }
     }
 }
