@@ -32,6 +32,6 @@ namespace ProjectsBaseShared.Data
         {
             Context.Entry(entity).State = EntityState.Deleted;
             Context.SaveChanges();
-;       }
+        }
     }
 }

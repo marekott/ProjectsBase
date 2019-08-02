@@ -14,25 +14,28 @@ namespace ProjectsBaseShared.Data
 
         public override Project Get(Guid guid, bool includeRelatedEntities = true)
         {
-            var projects = Context.Projects.AsQueryable();
-
-            if (includeRelatedEntities)
-            {
-                projects = projects
-                    .Include(p => p.Client)
-                    .Include(p => p.Auditors.Select(a => a.Auditor));
-            }
-
-            return projects
-                .SingleOrDefault(p => p.ProjectId == guid);
+            return includeRelatedEntities ?
+                Context.Projects.GetRelatedEntities()
+                    .SingleOrDefault(p => p.ProjectId == guid) :
+                Context.Projects
+                    .SingleOrDefault(p => p.ProjectId == guid);
         }
 
         public override List<Project> GetList()
         {
             return Context.Projects
-                .Include(p => p.Client)
-                .Include(p => p.Auditors.Select(a => a.Auditor))
+                .GetRelatedEntities()
                 .ToList();
+        }
+    }
+
+    public static class ProjectIQueryableExtension
+    {
+        public static IQueryable<Project> GetRelatedEntities(this IQueryable<Project> collection)
+        {
+            return collection
+                .Include(p => p.Client)
+                .Include(p => p.Auditors.Select(a => a.Auditor));
         }
     }
 }
