@@ -60,7 +60,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\ProjectDataMock.cs" />
+    <Compile Include="Data\ClientsRepositoryTests.cs" />
+    <Compile Include="Data\DataMock.cs" />
     <Compile Include="Data\ProjectsRepositoryTests.cs" />
     <Compile Include="Mock\DatabaseInitializerMock.cs" />
     <Compile Include="Models\AuditorTests.cs" />
