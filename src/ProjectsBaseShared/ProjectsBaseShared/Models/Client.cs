@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProjectsBaseShared.Models
 {
-    public class Client
+    public class Client : IEquatable<Client>
     {
         public Guid ClientId { get; set; }
         [Required, DisplayName("Name")]
@@ -16,6 +16,11 @@ namespace ProjectsBaseShared.Models
         public Client()
         {
             Projects = new List<Project>();
+        }
+
+        public bool Equals(Client other)
+        {
+            return this.ClientId == other?.ClientId;
         }
     }
 }

@@ -65,6 +65,7 @@
     <Compile Include="Data\ProjectsRepositoryTests.cs" />
     <Compile Include="Mock\DatabaseInitializerMock.cs" />
     <Compile Include="Models\AuditorTests.cs" />
+    <Compile Include="Models\ClientTests.cs" />
     <Compile Include="Models\ProjectTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

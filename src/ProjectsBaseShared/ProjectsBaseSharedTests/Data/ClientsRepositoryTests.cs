@@ -31,7 +31,7 @@ namespace ProjectsBaseSharedTests.Data
 
                 clientsRepository.Add(_dataMock.Client);
 
-                Assert.AreNotEqual(Guid.Empty, _dataMock.Project.Client.ClientId, "Empty guid was return");
+                Assert.AreNotEqual(Guid.Empty, _dataMock.ClientId, "Empty guid was return");
             }
         }
 
