@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ProjectsBaseShared.Models;
 
 namespace ProjectsBaseSharedTests.Data
@@ -20,17 +21,24 @@ namespace ProjectsBaseSharedTests.Data
 
         public DataMock()
         {
-            Project = new Project()
-            {
-                ProjectName = ProjectName,
-                ProjectStartDate = ProjectStartDate,
-                ProjectEndDate = ProjectEndDate,
-                Client = InitClient()
-            };
+            Project = InitProject();
+            Project.Client = InitClient();
             Project.Auditors.Add(InitAuditTeam());
             Project.Auditors.Add(InitAuditTeam());
 
             Client = InitClient();
+            Client.Projects.Add(InitProject());
+            Client.Projects.First().Auditors.Add(InitAuditTeam());
+        }
+
+        private Project InitProject()
+        {
+            return new Project()
+            {
+                ProjectName = ProjectName,
+                ProjectStartDate = ProjectStartDate,
+                ProjectEndDate = ProjectEndDate,
+            };
         }
 
         private Client InitClient()
