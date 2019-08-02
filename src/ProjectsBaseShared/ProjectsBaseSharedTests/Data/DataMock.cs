@@ -48,16 +48,6 @@ namespace ProjectsBaseSharedTests.Data
             };
         }
 
-        private Project InitProject(Project project)
-        {
-            return new Project()
-            {
-                ProjectName = project.ProjectName,
-                ProjectStartDate = project.ProjectStartDate,
-                ProjectEndDate = project.ProjectEndDate,
-            };
-        }
-
         private Client InitClient()
         {
             return new Client()

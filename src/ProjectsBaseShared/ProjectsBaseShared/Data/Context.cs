@@ -10,7 +10,6 @@ namespace ProjectsBaseShared.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Auditor> Auditors { get; set; }
-        public DbSet<AuditTeam> AuditTeams { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
