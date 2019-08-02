@@ -11,6 +11,15 @@ namespace ProjectsBaseSharedTests.Data
     {
         private DataMock _dataMock;
 
+        [SetUp]
+        public void CleanUp()
+        {
+            using (var context = new Context())
+            {
+                context.Database.Delete();
+            }
+        }
+
         [Test]
         public void AuditorsRepositoryCrudTests()
         {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using ProjectsBaseShared.Models;
 
 namespace ProjectsBaseShared.Data
@@ -12,12 +14,25 @@ namespace ProjectsBaseShared.Data
 
         public override Auditor Get(Guid guid, bool includeRelatedEntities = true)
         {
-            throw new NotImplementedException();
+            var auditors = Context.Auditors.AsQueryable();
+
+            if (includeRelatedEntities)
+            {
+                auditors = auditors
+                    .Include(a => a.Projects)
+                    .Include(a => a.Projects.Select(p => p.Project.Client));
+            }
+
+            return auditors
+                .SingleOrDefault(a => a.AuditorId == guid);
         }
 
         public override List<Auditor> GetList()
         {
-            throw new NotImplementedException();
+            return Context.Auditors
+                .Include(a => a.Projects)
+                .Include(a => a.Projects.Select(p => p.Project.Client))
+                .ToList();
         }
     }
 }
