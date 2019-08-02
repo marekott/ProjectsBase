@@ -9,12 +9,9 @@ namespace ProjectsBaseShared.Models
     {
         public Guid ProjectId { get; set; }
         public Guid ClientId { get; set; }
-        [Required, StringLength(100), DisplayName("Name")]
-        public string ProjectName { get; set; }
-        [DisplayName("Start date")]
-        public DateTime ProjectStartDate { get; set; }
-        [DisplayName("End date")]
-        public DateTime ProjectEndDate { get; set; }
+        [Required, StringLength(100), DisplayName("Name")] public string ProjectName { get; set; }
+        [DisplayName("Start date")] public DateTime ProjectStartDate { get; set; }
+        [DisplayName("End date")] public DateTime ProjectEndDate { get; set; }
         public Client Client { get; set; }
         public ICollection<AuditTeam> Auditors { get; set; }
 
