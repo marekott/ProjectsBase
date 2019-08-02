@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 using ProjectsBaseShared.Data;
+using ProjectsBaseSharedTests.Mock;
 
 namespace ProjectsBaseSharedTests.Data
 {

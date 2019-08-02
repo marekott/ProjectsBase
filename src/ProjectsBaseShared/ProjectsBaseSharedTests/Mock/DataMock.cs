@@ -2,7 +2,7 @@
 using System.Linq;
 using ProjectsBaseShared.Models;
 
-namespace ProjectsBaseSharedTests.Data
+namespace ProjectsBaseSharedTests.Mock
 {
     internal class DataMock
     {
