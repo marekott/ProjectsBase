@@ -29,7 +29,10 @@ namespace ProjectsBaseShared.Data
 
         public override List<Project> GetList()
         {
-            throw new NotImplementedException();
+            return Context.Projects
+                .Include(p => p.Client)
+                .Include(p => p.Auditors.Select(a => a.Auditor))
+                .ToList();
         }
     }
 }

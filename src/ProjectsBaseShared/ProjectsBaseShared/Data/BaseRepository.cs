@@ -24,9 +24,8 @@ namespace ProjectsBaseShared.Data
 
         public void Update(TEntity entity)
         {
-            throw new NotImplementedException();
-            //Context.Entry(entity).State = EntityState.Modified;
-            //Context.SaveChanges();
+            Context.Entry(entity).State = EntityState.Modified;
+            Context.SaveChanges();
         }
 
         public void Delete(TEntity entity)

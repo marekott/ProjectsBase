@@ -26,16 +26,17 @@ namespace ProjectsBaseSharedTests.Data
         [Test]
         public void ProjectsRepositoryCrud()
         {
-            _projectId = Create(ProjectName, _projectStartDate, _projectEndDate, ClientName);
+            _projectId = Seed(ProjectName, _projectStartDate, _projectEndDate, ClientName);
             GetOnlyProjectTest();
             GetOnlyProjectWhichNotExistTest();
             GetProjectAndRelatedTest();
             GetProjectAndRelatedWhichNotExistTest();
-            //TODO update
+            GetProjectsAndRelated();
+            UpdateTest();
             DeleteTest();
         }
 
-        private Guid Create(string projectName, DateTime projectStartDate, DateTime projectEndDate, string clientName)
+        private Guid Seed(string projectName, DateTime projectStartDate, DateTime projectEndDate, string clientName)
         {
             using (var context = new Context())
             {
@@ -52,11 +53,12 @@ namespace ProjectsBaseSharedTests.Data
             
         }
 
-        public void GetOnlyProjectTest()
+        private void GetOnlyProjectTest()
         {
             using (var context = new Context())
             {
                 var projectsRepository = new ProjectsRepository(context);
+                context.Database.Log = (message) => Debug.WriteLine(message);
 
                 var downloadedProject = projectsRepository.Get(_projectId, false);
 
@@ -67,14 +69,14 @@ namespace ProjectsBaseSharedTests.Data
                 Assert.AreEqual(0, downloadedProject.Auditors.Count, "GetOnlyProjectTest returns related auditors");
                 Assert.IsNull(downloadedProject.Client, "GetOnlyProjectTest returns related client");
             }
-            
         }
 
-        public void GetOnlyProjectWhichNotExistTest()
+        private void GetOnlyProjectWhichNotExistTest()
         {
             using (var context = new Context())
             {
                 var projectsRepository = new ProjectsRepository(context);
+                context.Database.Log = (message) => Debug.WriteLine(message);
 
                 var downloadedProject = projectsRepository.Get(Guid.Empty, false);
 
@@ -82,11 +84,12 @@ namespace ProjectsBaseSharedTests.Data
             }
         }
 
-        public void GetProjectAndRelatedTest()
+        private void GetProjectAndRelatedTest()
         {
             using (var context = new Context())
             {
                 var projectsRepository = new ProjectsRepository(context);
+                context.Database.Log = (message) => Debug.WriteLine(message);
 
                 var downloadedProject = projectsRepository.Get(_projectId);
 
@@ -107,11 +110,12 @@ namespace ProjectsBaseSharedTests.Data
             }
         }
 
-        public void GetProjectAndRelatedWhichNotExistTest()
+        private void GetProjectAndRelatedWhichNotExistTest()
         {
             using (var context = new Context())
             {
                 var projectsRepository = new ProjectsRepository(context);
+                context.Database.Log = (message) => Debug.WriteLine(message);
 
                 var downloadedProject = projectsRepository.Get(Guid.Empty);
 
@@ -119,7 +123,57 @@ namespace ProjectsBaseSharedTests.Data
             }
         }
 
-        public void DeleteTest()
+        private void GetProjectsAndRelated()
+        {
+            Seed(ProjectName, _projectStartDate, _projectEndDate, ClientName);
+
+            using (var context = new Context())
+            {
+                var projectsRepository = new ProjectsRepository(context);
+                context.Database.Log = (message) => Debug.WriteLine(message);
+
+                var projects = projectsRepository.GetList();
+
+                Assert.True(projects.Count > 1, "GetProjects returned only one project.");
+                Assert.True(projects.All(p => p.Client != null), "GetProjects does not return related clients.");
+                Assert.True(projects.All(p => p.Auditors.Count != 0), "GetProjects does not return related auditors.");
+            }
+        }
+
+        private void UpdateTest()
+        {
+            string newProjectName = "New name";
+            DateTime newStartDate = DateTime.Now.AddYears(1);
+            DateTime newEndDate = DateTime.Now.AddYears(2);
+
+            using (var context = new Context())
+            {
+                var projectsRepository = new ProjectsRepository(context);
+                context.Database.Log = (message) => Debug.WriteLine(message);
+
+                _project.ProjectName = newProjectName;
+                _project.ProjectStartDate = newStartDate;
+                _project.ProjectEndDate = newEndDate;
+
+                projectsRepository.Update(_project);
+            }
+
+            using (var context = new Context())
+            {
+                var projectsRepository = new ProjectsRepository(context);
+                context.Database.Log = (message) => Debug.WriteLine(message);
+
+                var downloadedProject = projectsRepository.Get(_project.ProjectId);
+
+                Assert.AreEqual(newProjectName, downloadedProject.ProjectName);
+                Assert.AreEqual(newStartDate.Date, downloadedProject.ProjectStartDate.Date);
+                Assert.AreEqual(newEndDate.Date, downloadedProject.ProjectEndDate.Date);
+                Assert.IsNotNull(downloadedProject.Client);
+                Assert.True(downloadedProject.Auditors.Count != 0);
+            }
+        }
+
+        private void DeleteTest()
         {
             using (var context = new Context())
             {
