@@ -60,6 +60,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\AuditorsRepositoryTests.cs" />
     <Compile Include="Data\ClientsRepositoryTests.cs" />
     <Compile Include="Data\DataMock.cs" />
     <Compile Include="Data\ProjectsRepositoryTests.cs" />

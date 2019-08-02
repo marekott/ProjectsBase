@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\AuditorsRepository.cs" />
     <Compile Include="Data\BaseRepository.cs" />
     <Compile Include="Data\ClientsRepository.cs" />
     <Compile Include="Data\Context.cs" />

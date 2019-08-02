@@ -13,7 +13,7 @@ namespace ProjectsBaseSharedTests.Data
         private DataMock _dataMock;
 
         [Test]
-        public void ProjectsRepositoryCrud()
+        public void ProjectsRepositoryCrudTests()
         {
             _dataMock = new DataMock();
             AddTest();

@@ -16,6 +16,8 @@ namespace ProjectsBaseSharedTests.Data
         public Client Client { get; set; }
         public readonly string ClientName = "Test client";
 
+        public Guid AuditorId => Auditor.AuditorId;
+        public Auditor Auditor { get; set; }
         public readonly string AuditorName = "Marek";
         public readonly string AuditorSurname = "Ott";
 
@@ -29,6 +31,11 @@ namespace ProjectsBaseSharedTests.Data
             Client = InitClient();
             Client.Projects.Add(InitProject());
             Client.Projects.First().Auditors.Add(InitAuditTeam());
+
+            Auditor = InitAuditor();
+            Auditor.Projects.Add(InitAuditTeam(Auditor));
+            Auditor.Projects.First().Project = InitProject();
+            Auditor.Projects.First().Project.Client = InitClient();
         }
 
         private Project InitProject()
@@ -54,6 +61,14 @@ namespace ProjectsBaseSharedTests.Data
             return new AuditTeam()
             {
                 Auditor = InitAuditor()
+            };
+        }
+
+        private AuditTeam InitAuditTeam(Auditor auditor)
+        {
+            return new AuditTeam()
+            {
+                Auditor = auditor
             };
         }
 
