@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<ProjectsBaseShared.Models.Project>
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -34,25 +35,37 @@
 
 <div class="row">
     <div class="col-md-12">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col" class="hidden-xs">Starting Date</th>
-                <th scope="col" class="hidden-xs">Closing Date</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
+        @if (@Model != null && @Model.Count > 0)
+        {
+            <table class="table">
+                <thead>
                 <tr>
-                    <td >1</td>
-                    <td>PZU - Audit</td>
-                    <td class="hidden-xs">2019-01-01</td>
-                    <td class="hidden-xs">2019-01-01</td>
-                    <td><input class="btn-link" type="button" value="Details" onclick="location.href = '#'" /></td>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col" class="hidden-xs">Starting Date</th>
+                    <th scope="col" class="hidden-xs">Closing Date</th>
+                    <th scope="col"></th>
                 </tr>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                @for (int i = 0; i < @Model.Count; i++)
+                {
+                    <tr>
+                        <td >@(i+1)</td>
+                        <td>@Model[i].ProjectName</td>
+                        <td class="hidden-xs">@Model[i].ProjectStartDate.ToShortDateString()</td>
+                        <td class="hidden-xs">@Model[i].ProjectEndDate.ToShortDateString()</td>
+                        <td><input class="btn-link" type="button" value="Details" onclick="location.href = '#'"/></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+        @if (@Model == null || @Model.Count == 0)
+        {
+            <div class="col-md-12 text-center">
+                    <h3>It seems that there aren't any open projects yet. Try again later.</h3>
+                </div>
+        }
     </div>
 </div>
