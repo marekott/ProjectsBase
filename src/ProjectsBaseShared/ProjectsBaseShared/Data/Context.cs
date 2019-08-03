@@ -5,7 +5,7 @@ using ProjectsBaseShared.Models;
 
 namespace ProjectsBaseShared.Data
 {
-    public class Context : DbContext //TODO add contexts in Web.config
+    public class Context : DbContext
     {
         public DbSet<Project> Projects { get; set; }
         public DbSet<Client> Clients { get; set; }
