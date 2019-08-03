@@ -9,17 +9,22 @@ namespace ProjectsBaseWebApplicationTests.Controllers
     [TestFixture]
     public class HomeControllerTest
     {
-        [Test]
-        public void Index()
-        {
-            // Arrange
-            HomeController controller = new HomeController();
+        private HomeController _homeController;
 
+        [SetUp]
+        public void Init()
+        {
+            _homeController = new HomeController();
+        }
+
+        [Test]
+        public void IndexTest()
+        {
             // Act
-            ViewResult result = controller.Index() as ViewResult;
+            var result = _homeController.Index();
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ViewResult>(result);
         }
     }
 }
