@@ -17,20 +17,16 @@ namespace ProjectsBaseWebApplicationTests.Controllers
     {
         private HomeController _homeController;
 
-        [SetUp]
-        public void Init()
-        {
-            _homeController = new HomeController();
-        }
-
         [Test]
         public void IndexTest()
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<BaseRepository<Project>>() //zamockowan metoda a wola sie normalna
+                mock.Mock<BaseRepository<Project>>()
                     .Setup(projectsRepository => projectsRepository.GetList())
                     .Returns(GetSampleProjects());
+
+                _homeController = mock.Create<HomeController>();
 
                 var result = _homeController.Index();
 

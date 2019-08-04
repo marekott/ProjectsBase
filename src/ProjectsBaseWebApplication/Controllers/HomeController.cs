@@ -1,18 +1,19 @@
 ﻿using System.Web.Mvc;
 using ProjectsBaseShared.Data;
+using ProjectsBaseShared.Models;
 
 namespace ProjectsBaseWebApplication.Controllers
 {
     public class HomeController : Controller
     {
         private readonly Context _context;
-        private readonly ProjectsRepository _projectsRepository;
+        private readonly BaseRepository<Project> _projectsRepository;
         private bool _disposed;
 
-        public HomeController()
+        public HomeController(BaseRepository<Project> projectsRepository)
         {
             _context = new Context();
-            _projectsRepository = new ProjectsRepository(_context);
+            _projectsRepository = projectsRepository;
         }
         public ActionResult Index()
         {
