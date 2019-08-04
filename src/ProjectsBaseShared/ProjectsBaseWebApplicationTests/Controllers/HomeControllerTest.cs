@@ -34,6 +34,40 @@ namespace ProjectsBaseWebApplicationTests.Controllers
             }
         }
 
+        [Test]
+        public void IndexWithParameterNonExistingProjectTest()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<BaseRepository<Project>>()
+                    .Setup(projectsRepository => projectsRepository.GetList())
+                    .Returns(GetSampleProjects());
+
+                _homeController = mock.Create<HomeController>();
+
+                var result = _homeController.Index("Random name");
+
+                Assert.IsInstanceOf<ViewResult>(result);
+            }
+        }
+
+        [Test]
+        public void IndexWithParameterExistingProjectTest()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<BaseRepository<Project>>()
+                    .Setup(projectsRepository => projectsRepository.GetList())
+                    .Returns(GetSampleProjects());
+
+                _homeController = mock.Create<HomeController>();
+
+                var result = _homeController.Index("Mocked project1");
+
+                Assert.IsInstanceOf<ViewResult>(result);
+            }
+        }
+
         private List<Project> GetSampleProjects()
         {
             return new List<Project>()

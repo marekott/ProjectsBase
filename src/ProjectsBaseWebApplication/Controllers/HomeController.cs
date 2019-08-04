@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using ProjectsBaseShared.Data;
 using ProjectsBaseShared.Models;
 
@@ -15,9 +16,20 @@ namespace ProjectsBaseWebApplication.Controllers
             _context = new Context();
             _projectsRepository = projectsRepository;
         }
+        
         public ActionResult Index()
         {
             var projects = _projectsRepository.GetList();
+
+            return View(projects);
+        }
+        [HttpPost]
+        public object Index(string projectName)
+        {
+            var projects = _projectsRepository.GetList()
+                .Where(p => p.ProjectName.ToLower()
+                    .Contains(projectName.ToLower()))
+                .ToList();
 
             return View(projects);
         }
@@ -38,5 +50,7 @@ namespace ProjectsBaseWebApplication.Controllers
 
             base.Dispose(disposing);
         }
+
+        
     }
 }

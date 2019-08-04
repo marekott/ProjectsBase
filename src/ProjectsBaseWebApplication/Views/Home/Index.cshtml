@@ -25,13 +25,30 @@
     </div>
 </div>
 
-<div class="row mb-10">
-    <div class="col-md-12">
-        <div class="pull-right">
-            <a href="" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add project</a>
-        </div>
+@using (Html.BeginForm())
+{
+    <div class="row mb-10">
+        @if (@Model != null && @Model.Count > 0) //TODO odwrotna kolejnosc na malym ekranie
+        {
+            <div class="col-md-6">
+                <p>Search by name: @Html.TextBox("projectName") <input class="btn btn-default" type="submit" value="Search"/></p>
+            </div>
+            <div class="col-md-6">
+                <div class="pull-right">
+                    <a href="#" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add project</a>
+                </div>
+            </div>
+        }
+        @if (@Model == null || @Model.Count == 0)
+        {
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <a href="#" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add project</a>
+                </div>
+            </div>
+        }   
     </div>
-</div>
+}
 
 <div class="row">
     <div class="col-md-12">
