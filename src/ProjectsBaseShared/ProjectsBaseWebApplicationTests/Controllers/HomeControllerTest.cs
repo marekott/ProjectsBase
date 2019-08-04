@@ -1,5 +1,11 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Web.Mvc;
+using Autofac.Extras.Moq;
 using NUnit.Framework;
+using ProjectsBaseShared.Data;
+using ProjectsBaseShared.Models;
 using ProjectsBaseWebApplication.Controllers;
 using Assert = NUnit.Framework.Assert;
 
@@ -20,11 +26,31 @@ namespace ProjectsBaseWebApplicationTests.Controllers
         [Test]
         public void IndexTest()
         {
-            // Act
-            var result = _homeController.Index();
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<BaseRepository<Project>>() //zamockowan metoda a wola sie normalna
+                    .Setup(projectsRepository => projectsRepository.GetList())
+                    .Returns(GetSampleProjects());
 
-            // Assert
-            Assert.IsInstanceOf<ViewResult>(result);
+                var result = _homeController.Index();
+
+                Assert.IsInstanceOf<ViewResult>(result);
+            }
+        }
+
+        private List<Project> GetSampleProjects()
+        {
+            return new List<Project>()
+            {
+                new Project()
+                {
+                    ProjectName = "Mocked project1"
+                },
+                new Project()
+                {
+                    ProjectName = "Mocked project2"
+                }
+            };
         }
     }
 }

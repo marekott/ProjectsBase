@@ -8,6 +8,9 @@ namespace ProjectsBaseShared.Data
     {
         protected Context Context { get; }
 
+        protected BaseRepository()
+        { }
+
         protected BaseRepository(Context context)
         {
             Context = context;

@@ -8,7 +8,7 @@ using ProjectsBaseSharedTests.Mock;
 namespace ProjectsBaseSharedTests.Data
 {
     [TestFixture]
-    public class ProjectsRepositoryTests
+    public class ProjectsRepositoryTests //TODO dodać implementacje Dispose to moze nie bd trzeba robic using w kazdej metodzie osobno
     {
         private DataMock _dataMock;
 
