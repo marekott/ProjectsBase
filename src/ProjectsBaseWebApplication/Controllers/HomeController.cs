@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using ProjectsBaseShared.Data;
 using ProjectsBaseShared.Models;
@@ -24,7 +25,7 @@ namespace ProjectsBaseWebApplication.Controllers
             return View(projects);
         }
         [HttpPost]
-        public object Index(string projectName)
+        public ActionResult Index(string projectName)
         {
             var projects = _projectsRepository.GetList()
                 .Where(p => p.ProjectName.ToLower()
@@ -32,6 +33,17 @@ namespace ProjectsBaseWebApplication.Controllers
                 .ToList();
 
             return View(projects);
+        }
+        public ActionResult ProjectDetails(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return HttpNotFound();
+            }
+
+            var selectedOffer = _projectsRepository.Get(id);
+
+            return View(selectedOffer);
         }
 
         protected override void Dispose(bool disposing)
@@ -50,6 +62,7 @@ namespace ProjectsBaseWebApplication.Controllers
 
             base.Dispose(disposing);
         }
+
 
         
     }

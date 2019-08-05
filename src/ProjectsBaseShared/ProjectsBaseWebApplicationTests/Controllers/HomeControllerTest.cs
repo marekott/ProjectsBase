@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Web.Mvc;
 using Autofac.Extras.Moq;
 using NUnit.Framework;
@@ -80,6 +79,48 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                 {
                     ProjectName = "Mocked project2"
                 }
+            };
+        }
+
+        [Test]
+        public void ProjectDetailsTest()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<BaseRepository<Project>>()
+                    .Setup(projectsRepository => projectsRepository.Get(Guid.Empty, true))
+                    .Returns(GetSampleProject());
+
+                _homeController = mock.Create<HomeController>();
+
+                var result = _homeController.ProjectDetails(Guid.NewGuid());
+
+                Assert.IsInstanceOf<ViewResult>(result);
+            }
+        }
+
+        [Test]
+        public void ProjectDetailsPassNullTest()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<BaseRepository<Project>>()
+                    .Setup(projectsRepository => projectsRepository.Get(Guid.Empty, true))
+                    .Returns(GetSampleProject());
+
+                _homeController = mock.Create<HomeController>();
+
+                var result = _homeController.ProjectDetails(Guid.Empty);
+
+                Assert.IsInstanceOf<HttpNotFoundResult>(result);
+            }
+        }
+
+        private Project GetSampleProject()
+        {
+            return new Project()
+            {
+                ProjectName = "Mocked Project"
             };
         }
     }
