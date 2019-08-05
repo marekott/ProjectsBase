@@ -34,14 +34,14 @@ namespace ProjectsBaseWebApplication.Controllers
 
             return View(projects);
         }
-        public ActionResult ProjectDetails(Guid id)
+        public ActionResult ProjectDetails(Guid? id)
         {
-            if (id == Guid.Empty)
+            if (id == null)
             {
                 return HttpNotFound();
             }
 
-            var selectedOffer = _projectsRepository.Get(id);
+            var selectedOffer = _projectsRepository.Get((Guid)id);
 
             return View(selectedOffer);
         }

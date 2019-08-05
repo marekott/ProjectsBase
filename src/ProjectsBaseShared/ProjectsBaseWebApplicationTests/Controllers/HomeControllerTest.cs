@@ -110,7 +110,7 @@ namespace ProjectsBaseWebApplicationTests.Controllers
 
                 _homeController = mock.Create<HomeController>();
 
-                var result = _homeController.ProjectDetails(Guid.Empty);
+                var result = _homeController.ProjectDetails(null);
 
                 Assert.IsInstanceOf<HttpNotFoundResult>(result);
             }

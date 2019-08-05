@@ -72,7 +72,7 @@
                         <td>@Model[i].ProjectName</td>
                         <td class="hidden-xs">@Model[i].ProjectStartDate.ToShortDateString()</td>
                         <td class="hidden-xs">@Model[i].ProjectEndDate.ToShortDateString()</td>
-                        <td><input class="btn-link" type="button" value="Details" onclick="location.href = '#'"/></td>
+                        <td><input class="btn-link" type="button" value="Details" onclick="location.href = '@Url.Action("ProjectDetails", new {id = @Model[i].ProjectId})'"/></td>
                     </tr>
                 }
                 </tbody>
