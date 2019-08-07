@@ -22,14 +22,5 @@ namespace ProjectsBaseSharedTests.Mock
             Auditor.Projects.First().Project = new ProjectDataMock(this).Project;
             Auditor.Projects.First().Project.Client = new ClientDataMock(Auditor.Projects.First().Project).Client;
         }
-
-        public AuditorDataMock(object obj) //TODO popraw bo aż w oczy kole
-        {
-            Auditor = new Auditor()
-            {
-                AuditorName = AuditorName,
-                AuditorSurname = AuditorSurname
-            };
-        }
     }
 }

@@ -17,7 +17,7 @@ namespace ProjectsBaseSharedTests.Mock
                 ClientName = ClientName
             };
             Client.Projects.Add(new ProjectDataMock(this).Project);
-            Client.Projects.First().Auditors.Add(new AuditTeam() { Auditor = new AuditorDataMock(this).Auditor });
+            Client.Projects.First().Auditors.Add(new AuditTeam() { Auditor = new Auditor() { AuditorName = "test", AuditorSurname = "test" } });
         }
 
         public ClientDataMock(Project projectDataMock)
@@ -27,7 +27,7 @@ namespace ProjectsBaseSharedTests.Mock
                 ClientName = ClientName
             };
             Client.Projects.Add(projectDataMock);
-            Client.Projects.First().Auditors.Add(new AuditTeam() { Auditor = new AuditorDataMock(projectDataMock).Auditor });
+            Client.Projects.First().Auditors.Add(new AuditTeam() { Auditor = new Auditor() {AuditorName = "test", AuditorSurname = "test" } });
         }
     }
 }

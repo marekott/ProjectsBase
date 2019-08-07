@@ -22,7 +22,7 @@ namespace ProjectsBaseSharedTests.Mock
                 
             };
             Project.Client = new ClientDataMock(this.Project).Client; //must be outside of Project initializer or this will be null
-            var auditTeamMember = new AuditTeam() { Auditor = new AuditorDataMock(this).Auditor };
+            var auditTeamMember = new AuditTeam() { Auditor = new Auditor() { AuditorName = "test", AuditorSurname = "test" } };
             Project.Auditors.Add(auditTeamMember);
             Project.Auditors.Add(auditTeamMember);
         }
@@ -36,7 +36,7 @@ namespace ProjectsBaseSharedTests.Mock
                 ProjectEndDate = ProjectEndDate,
                 Client = clientData.Client,
             };
-            var auditTeamMember = new AuditTeam() { Auditor = new AuditorDataMock(this).Auditor };
+            var auditTeamMember = new AuditTeam() { Auditor = new Auditor() { AuditorName = "test", AuditorSurname = "test" } };
             Project.Auditors.Add(auditTeamMember);
             Project.Auditors.Add(auditTeamMember);
         }
