@@ -10,7 +10,8 @@ namespace ProjectsBaseSharedTests.Data
     [TestFixture]
     public class AuditorsRepositoryTests
     {
-        private DataMock _dataMock;
+       // private DataMock _dataMock;
+        private AuditorDataMock _auditorDataMock;
 
         [SetUp]
         public void CleanUp()
@@ -24,7 +25,8 @@ namespace ProjectsBaseSharedTests.Data
         [Test]
         public void AuditorsRepositoryCrudTests()
         {
-            _dataMock = new DataMock();
+            //_dataMock = new DataMock();
+            _auditorDataMock = new AuditorDataMock();
             AddTest();
             GetOnlyAuditorTest();
             GetAuditorAndRelatedTest();
@@ -40,9 +42,9 @@ namespace ProjectsBaseSharedTests.Data
                 var auditorsRepository = new AuditorsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                auditorsRepository.Add(_dataMock.Auditor);
+                auditorsRepository.Add(_auditorDataMock.Auditor);
 
-                Assert.AreNotEqual(Guid.Empty, _dataMock.AuditorId, "Empty guid was return");
+                Assert.AreNotEqual(Guid.Empty, _auditorDataMock.AuditorId, "Empty guid was return");
             }
         }
 
@@ -53,11 +55,11 @@ namespace ProjectsBaseSharedTests.Data
                 var auditorsRepository = new AuditorsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                var downloadedAuditor = auditorsRepository.Get(_dataMock.AuditorId, false);
+                var downloadedAuditor = auditorsRepository.Get(_auditorDataMock.AuditorId, false);
 
-                Assert.True(downloadedAuditor.Equals(_dataMock.Auditor), "GetOnlyAuditorTest returns auditor with different guid");
-                Assert.AreEqual(_dataMock.AuditorName, downloadedAuditor.AuditorName, "GetOnlyAuditorTest returns auditor with different name");
-                Assert.AreEqual(_dataMock.AuditorSurname, downloadedAuditor.AuditorSurname, "GetOnlyAuditorTest returns auditor with different surname");
+                Assert.True(downloadedAuditor.Equals(_auditorDataMock.Auditor), "GetOnlyAuditorTest returns auditor with different guid");
+                Assert.AreEqual(_auditorDataMock.AuditorName, downloadedAuditor.AuditorName, "GetOnlyAuditorTest returns auditor with different name");
+                Assert.AreEqual(_auditorDataMock.AuditorSurname, downloadedAuditor.AuditorSurname, "GetOnlyAuditorTest returns auditor with different surname");
                 Assert.AreEqual(0, downloadedAuditor.Projects.Count, "GetOnlyAuditorTest returns related projects");
             }
         }
@@ -69,11 +71,11 @@ namespace ProjectsBaseSharedTests.Data
                 var auditorsRepository = new AuditorsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                var downloadedAuditor = auditorsRepository.Get(_dataMock.AuditorId);
+                var downloadedAuditor = auditorsRepository.Get(_auditorDataMock.AuditorId);
 
-                Assert.True(downloadedAuditor.Equals(_dataMock.Auditor), "GetAuditorAndRelatedTest returns auditor with different guid");
-                Assert.AreEqual(_dataMock.AuditorName, downloadedAuditor.AuditorName, "GetAuditorAndRelatedTest returns auditor with different name");
-                Assert.AreEqual(_dataMock.AuditorSurname, downloadedAuditor.AuditorSurname, "GetAuditorAndRelatedTest returns auditor with different surname");
+                Assert.True(downloadedAuditor.Equals(_auditorDataMock.Auditor), "GetAuditorAndRelatedTest returns auditor with different guid");
+                Assert.AreEqual(_auditorDataMock.AuditorName, downloadedAuditor.AuditorName, "GetAuditorAndRelatedTest returns auditor with different name");
+                Assert.AreEqual(_auditorDataMock.AuditorSurname, downloadedAuditor.AuditorSurname, "GetAuditorAndRelatedTest returns auditor with different surname");
                 Assert.True(downloadedAuditor.Projects.Count > 0, "GetAuditorAndRelatedTest does not return related projects");
                 Assert.True(downloadedAuditor.Projects.All(p => p.Project.Client != null), "GetAuditorAndRelatedTest does not return related clients");
             }
@@ -106,10 +108,10 @@ namespace ProjectsBaseSharedTests.Data
                 var auditorsRepository = new AuditorsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                _dataMock.Auditor.AuditorName = newAuditorName;
-                _dataMock.Auditor.AuditorSurname = newAuditorSurname;
+                _auditorDataMock.Auditor.AuditorName = newAuditorName;
+                _auditorDataMock.Auditor.AuditorSurname = newAuditorSurname;
 
-                auditorsRepository.Update(_dataMock.Auditor);
+                auditorsRepository.Update(_auditorDataMock.Auditor);
             }
 
             using (var context = new Context())
@@ -117,7 +119,7 @@ namespace ProjectsBaseSharedTests.Data
                 var auditorsRepository = new AuditorsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                var downloadedAuditor = auditorsRepository.Get(_dataMock.AuditorId);
+                var downloadedAuditor = auditorsRepository.Get(_auditorDataMock.AuditorId);
 
                 Assert.AreEqual(newAuditorName, downloadedAuditor.AuditorName);
                 Assert.AreEqual(newAuditorSurname, downloadedAuditor.AuditorSurname);
@@ -133,7 +135,7 @@ namespace ProjectsBaseSharedTests.Data
                 var auditorsRepository = new AuditorsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                var downloadedAuditor = auditorsRepository.Get(_dataMock.AuditorId, false);
+                var downloadedAuditor = auditorsRepository.Get(_auditorDataMock.AuditorId, false);
                 var id = downloadedAuditor.AuditorId;
                 Assert.IsNotNull(downloadedAuditor, "Auditor does not exist before delete.");
 

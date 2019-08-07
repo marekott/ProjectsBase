@@ -10,7 +10,7 @@ namespace ProjectsBaseSharedTests.Data
     [TestFixture]
     public class ProjectsRepositoryTests //TODO dodać implementacje Dispose to moze nie bd trzeba robic using w kazdej metodzie osobno
     {
-        private DataMock _dataMock;
+        private ProjectDataMock _projectDataMock;
 
         [SetUp]
         public void CleanUp()
@@ -24,7 +24,7 @@ namespace ProjectsBaseSharedTests.Data
         [Test]
         public void ProjectsRepositoryCrudTests()
         {
-            _dataMock = new DataMock();
+            _projectDataMock = new ProjectDataMock();
             AddTest();
             GetOnlyProjectTest();
             GetProjectAndRelatedTest();
@@ -40,9 +40,9 @@ namespace ProjectsBaseSharedTests.Data
                 var projectsRepository = new ProjectsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                projectsRepository.Add(_dataMock.Project);
+                projectsRepository.Add(_projectDataMock.Project);
 
-                Assert.AreNotEqual(Guid.Empty, _dataMock.ProjectId, "Empty guid was return");
+                Assert.AreNotEqual(Guid.Empty, _projectDataMock.ProjectId, "Empty guid was return");
             }
         }
 
@@ -53,12 +53,12 @@ namespace ProjectsBaseSharedTests.Data
                 var projectsRepository = new ProjectsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                var downloadedProject = projectsRepository.Get(_dataMock.ProjectId, false);
+                var downloadedProject = projectsRepository.Get(_projectDataMock.ProjectId, false);
 
-                Assert.True(downloadedProject.Equals(_dataMock.Project), "GetOnlyProjectTest returns project with different guid");
-                Assert.AreEqual(_dataMock.ProjectName, downloadedProject.ProjectName, "GetOnlyProjectTest returns project with different name");
-                Assert.AreEqual(_dataMock.ProjectStartDate.Date, downloadedProject.ProjectStartDate.Date, "GetOnlyProjectTest returns project with different start date");
-                Assert.AreEqual(_dataMock.ProjectEndDate.Date, downloadedProject.ProjectEndDate.Date, "GetOnlyProjectTest returns project with different end date");
+                Assert.True(downloadedProject.Equals(_projectDataMock.Project), "GetOnlyProjectTest returns project with different guid");
+                Assert.AreEqual(_projectDataMock.ProjectName, downloadedProject.ProjectName, "GetOnlyProjectTest returns project with different name");
+                Assert.AreEqual(_projectDataMock.ProjectStartDate.Date, downloadedProject.ProjectStartDate.Date, "GetOnlyProjectTest returns project with different start date");
+                Assert.AreEqual(_projectDataMock.ProjectEndDate.Date, downloadedProject.ProjectEndDate.Date, "GetOnlyProjectTest returns project with different end date");
                 Assert.AreEqual(0, downloadedProject.Auditors.Count, "GetOnlyProjectTest returns related auditors");
                 Assert.IsNull(downloadedProject.Client, "GetOnlyProjectTest returns related client");
             }
@@ -71,22 +71,22 @@ namespace ProjectsBaseSharedTests.Data
                 var projectsRepository = new ProjectsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                var downloadedProject = projectsRepository.Get(_dataMock.ProjectId);
+                var downloadedProject = projectsRepository.Get(_projectDataMock.ProjectId);
 
-                Assert.True(downloadedProject.Equals(_dataMock.Project), "GetProjectAndRelatedTest returns project with different guid");
-                Assert.AreEqual(_dataMock.ProjectName, downloadedProject.ProjectName , "GetProjectAndRelatedTest returns project with different name");
-                Assert.AreEqual(_dataMock.ProjectStartDate.Date, downloadedProject.ProjectStartDate.Date , "GetProjectAndRelatedTest returns project with different start date");
-                Assert.AreEqual(_dataMock.ProjectEndDate.Date, downloadedProject.ProjectEndDate.Date, "GetProjectAndRelatedTest returns project with different end date");
+                Assert.True(downloadedProject.Equals(_projectDataMock.Project), "GetProjectAndRelatedTest returns project with different guid");
+                Assert.AreEqual(_projectDataMock.ProjectName, downloadedProject.ProjectName , "GetProjectAndRelatedTest returns project with different name");
+                Assert.AreEqual(_projectDataMock.ProjectStartDate.Date, downloadedProject.ProjectStartDate.Date , "GetProjectAndRelatedTest returns project with different start date");
+                Assert.AreEqual(_projectDataMock.ProjectEndDate.Date, downloadedProject.ProjectEndDate.Date, "GetProjectAndRelatedTest returns project with different end date");
                 Assert.AreEqual(2, downloadedProject.Auditors.Count, "GetProjectAndRelatedTest does not returns related auditors");
                 Assert.IsNotNull(downloadedProject.Auditors.ToList()[0].Auditor);
-                Assert.AreEqual(_dataMock.AuditorName, downloadedProject.Auditors.ToList()[0].Auditor.AuditorName);
-                Assert.AreEqual(_dataMock.AuditorSurname, downloadedProject.Auditors.ToList()[0].Auditor.AuditorSurname);
+                Assert.AreEqual(_projectDataMock.Project.Auditors.First().Auditor.AuditorName, downloadedProject.Auditors.ToList()[0].Auditor.AuditorName);
+                Assert.AreEqual(_projectDataMock.Project.Auditors.First().Auditor.AuditorSurname, downloadedProject.Auditors.ToList()[0].Auditor.AuditorSurname);
                 Assert.IsNotNull(downloadedProject.Auditors.ToList()[1].Auditor);
-                Assert.AreEqual(_dataMock.AuditorName, downloadedProject.Auditors.ToList()[1].Auditor.AuditorName);
-                Assert.AreEqual(_dataMock.AuditorSurname, downloadedProject.Auditors.ToList()[1].Auditor.AuditorSurname);
+                Assert.AreEqual(_projectDataMock.Project.Auditors.Skip(1).First().Auditor.AuditorName, downloadedProject.Auditors.ToList()[1].Auditor.AuditorName);
+                Assert.AreEqual(_projectDataMock.Project.Auditors.Skip(1).First().Auditor.AuditorSurname, downloadedProject.Auditors.ToList()[1].Auditor.AuditorSurname);
                 Assert.AreEqual(2, downloadedProject.Auditors.Select(a => a.Auditor.AuditorId).Distinct().Count());
                 Assert.IsNotNull(downloadedProject.Client, "GetProjectAndRelatedTest does not return related client");
-                Assert.AreEqual(_dataMock.ClientName, downloadedProject.Client.ClientName, "GetProjectAndRelatedTest returned wrong client name");
+                Assert.AreEqual(_projectDataMock.Project.Client.ClientName, downloadedProject.Client.ClientName, "GetProjectAndRelatedTest returned wrong client name");
             }
         }
 
@@ -118,11 +118,11 @@ namespace ProjectsBaseSharedTests.Data
                 var projectsRepository = new ProjectsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                _dataMock.Project.ProjectName = newProjectName;
-                _dataMock.Project.ProjectStartDate = newStartDate;
-                _dataMock.Project.ProjectEndDate = newEndDate;
+                _projectDataMock.Project.ProjectName = newProjectName;
+                _projectDataMock.Project.ProjectStartDate = newStartDate;
+                _projectDataMock.Project.ProjectEndDate = newEndDate;
 
-                projectsRepository.Update(_dataMock.Project);
+                projectsRepository.Update(_projectDataMock.Project);
             }
 
             using (var context = new Context())
@@ -130,7 +130,7 @@ namespace ProjectsBaseSharedTests.Data
                 var projectsRepository = new ProjectsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                var downloadedProject = projectsRepository.Get(_dataMock.ProjectId);
+                var downloadedProject = projectsRepository.Get(_projectDataMock.ProjectId);
 
                 Assert.AreEqual(newProjectName, downloadedProject.ProjectName);
                 Assert.AreEqual(newStartDate.Date, downloadedProject.ProjectStartDate.Date);
@@ -147,7 +147,7 @@ namespace ProjectsBaseSharedTests.Data
                 var projectsRepository = new ProjectsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                var downloadedProject = projectsRepository.Get(_dataMock.ProjectId, false);
+                var downloadedProject = projectsRepository.Get(_projectDataMock.ProjectId, false);
                 var id = downloadedProject.ProjectId;
                 Assert.IsNotNull(downloadedProject, "Project does not exist before delete.");
 

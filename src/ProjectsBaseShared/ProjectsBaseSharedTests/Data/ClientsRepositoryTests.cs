@@ -9,7 +9,7 @@ namespace ProjectsBaseSharedTests.Data
 {
     public class ClientsRepositoryTests
     {
-        private DataMock _dataMock;
+        private ClientDataMock _clientDataMock;
 
         [SetUp]
         public void CleanUp()
@@ -23,7 +23,7 @@ namespace ProjectsBaseSharedTests.Data
         [Test]
         public void ClientsRepositoryCrudTests()
         {
-            _dataMock = new DataMock();
+            _clientDataMock = new ClientDataMock();
             AddTest();
             GetOnlyClientTest();
             GetClientAndRelatedTest();
@@ -39,9 +39,9 @@ namespace ProjectsBaseSharedTests.Data
                 var clientsRepository = new ClientsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                clientsRepository.Add(_dataMock.Client);
+                clientsRepository.Add(_clientDataMock.Client);
 
-                Assert.AreNotEqual(Guid.Empty, _dataMock.ClientId, "Empty guid was return");
+                Assert.AreNotEqual(Guid.Empty, _clientDataMock.ClientId, "Empty guid was return");
             }
         }
 
@@ -52,10 +52,10 @@ namespace ProjectsBaseSharedTests.Data
                 var clientsRepository = new ClientsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                var downloadedClient = clientsRepository.Get(_dataMock.ClientId, false);
+                var downloadedClient = clientsRepository.Get(_clientDataMock.ClientId, false);
 
-                Assert.True(downloadedClient.Equals(_dataMock.Client), "GetOnlyClientTest returns client with different guid");
-                Assert.AreEqual(_dataMock.ClientName, downloadedClient.ClientName, "GetOnlyClientTest returns client with different name");
+                Assert.True(downloadedClient.Equals(_clientDataMock.Client), "GetOnlyClientTest returns client with different guid");
+                Assert.AreEqual(_clientDataMock.ClientName, downloadedClient.ClientName, "GetOnlyClientTest returns client with different name");
                 Assert.AreEqual(0, downloadedClient.Projects.Count, "GetOnlyClientTest returns related projects");
             }
         }
@@ -67,10 +67,10 @@ namespace ProjectsBaseSharedTests.Data
                 var clientsRepository = new ClientsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                var downloadedClient = clientsRepository.Get(_dataMock.ClientId);
+                var downloadedClient = clientsRepository.Get(_clientDataMock.ClientId);
 
-                Assert.True(downloadedClient.Equals(_dataMock.Client), "GetClientAndRelatedTest returns client with different guid");
-                Assert.AreEqual(_dataMock.ClientName, downloadedClient.ClientName, "GetClientAndRelatedTest returns client with different name");
+                Assert.True(downloadedClient.Equals(_clientDataMock.Client), "GetClientAndRelatedTest returns client with different guid");
+                Assert.AreEqual(_clientDataMock.ClientName, downloadedClient.ClientName, "GetClientAndRelatedTest returns client with different name");
                 Assert.True(downloadedClient.Projects.Count > 0, "GetClientAndRelatedTest does not return related projects");
                 Assert.True(downloadedClient.Projects.All(p => p.Auditors.Count > 0), "GetClientAndRelatedTest does not return related auditors");
             }
@@ -102,9 +102,9 @@ namespace ProjectsBaseSharedTests.Data
                 var clientsRepository = new ClientsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                _dataMock.Client.ClientName = newClientName;
+                _clientDataMock.Client.ClientName = newClientName;
 
-                clientsRepository.Update(_dataMock.Client);
+                clientsRepository.Update(_clientDataMock.Client);
             }
 
             using (var context = new Context())
@@ -112,7 +112,7 @@ namespace ProjectsBaseSharedTests.Data
                 var clientsRepository = new ClientsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                var downloadedClient = clientsRepository.Get(_dataMock.ClientId);
+                var downloadedClient = clientsRepository.Get(_clientDataMock.ClientId);
 
                 Assert.AreEqual(newClientName, downloadedClient.ClientName);
                 Assert.True(downloadedClient.Projects.Count > 0, "UpdateTest does not return related projects");
@@ -127,7 +127,7 @@ namespace ProjectsBaseSharedTests.Data
                 var clientsRepository = new ClientsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
-                var downloadedClient = clientsRepository.Get(_dataMock.ClientId, false);
+                var downloadedClient = clientsRepository.Get(_clientDataMock.ClientId, false);
                 var id = downloadedClient.ClientId;
                 Assert.IsNotNull(downloadedClient, "Client does not exist before delete.");
 
