@@ -8,13 +8,13 @@ namespace ProjectsBaseWebApplication.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly Context _context;
+        //private readonly Context _context; //TODO do usunięcia jak ustali się gdzie ma być dispose
         private readonly BaseRepository<Project> _projectsRepository;
-        private bool _disposed;
+        //private bool _disposed; //TODO do usunięcia jak ustali się gdzie ma być dispose
 
         public HomeController(BaseRepository<Project> projectsRepository)
         {
-            _context = new Context();
+            //_context = new Context(); //TODO do usunięcia jak ustali się gdzie ma być dispose
             _projectsRepository = projectsRepository;
         }
         
@@ -46,24 +46,21 @@ namespace ProjectsBaseWebApplication.Controllers
             return View(selectedOffer);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (_disposed)
-            {
-                return;
-            }
+        //protected override void Dispose(bool disposing) //TODO ustalić gdzie powinno być dispose robione na context bo na pewno nie tu
+        //{
+        //    if (_disposed)
+        //    {
+        //        return;
+        //    }
 
-            if (disposing)
-            {
-                _context.Dispose();
-            }
+        //    if (disposing)
+        //    {
+        //        _context.Dispose();
+        //    }
 
-            _disposed = true;
+        //    _disposed = true;
 
-            base.Dispose(disposing);
-        }
-
-
-        
+        //    base.Dispose(disposing);
+        //}
     }
 }
