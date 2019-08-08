@@ -12,7 +12,7 @@ using Assert = NUnit.Framework.Assert;
 namespace ProjectsBaseWebApplicationTests.Controllers
 {
     [TestFixture]
-    public class HomeControllerTest
+    public class HomeControllerTests
     {
         private HomeController _homeController;
 
