@@ -30,7 +30,7 @@ namespace ProjectsBaseSharedTests.Data
             AddTest();
             GetOnlyAuditorTest();
             GetAuditorAndRelatedTest();
-            GetAuditorsAndRelated();
+            GetAuditorsAndRelatedTest();
             UpdateTest();
             DeleteTest();
         }
@@ -81,7 +81,7 @@ namespace ProjectsBaseSharedTests.Data
             }
         }
 
-        private void GetAuditorsAndRelated()
+        private void GetAuditorsAndRelatedTest()
         {
             AddTest();
 

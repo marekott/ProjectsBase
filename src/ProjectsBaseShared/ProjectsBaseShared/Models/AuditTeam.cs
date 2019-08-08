@@ -4,7 +4,7 @@ namespace ProjectsBaseShared.Models
 {
     public class AuditTeam
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Guid ProjectId { get; set; }
         public Guid AuditorId { get; set; }
         public Project Project { get; set; }

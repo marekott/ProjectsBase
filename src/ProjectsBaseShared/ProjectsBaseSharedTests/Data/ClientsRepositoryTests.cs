@@ -27,7 +27,7 @@ namespace ProjectsBaseSharedTests.Data
             AddTest();
             GetOnlyClientTest();
             GetClientAndRelatedTest();
-            GetClientsAndRelated();
+            GetClientsAndRelatedTest();
             UpdateTest();
             DeleteTest();
         }
@@ -76,7 +76,7 @@ namespace ProjectsBaseSharedTests.Data
             }
         }
 
-        private void GetClientsAndRelated()
+        private void GetClientsAndRelatedTest()
         {
             AddTest();
 

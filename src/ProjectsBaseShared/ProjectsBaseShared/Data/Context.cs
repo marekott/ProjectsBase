@@ -10,6 +10,7 @@ namespace ProjectsBaseShared.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Auditor> Auditors { get; set; }
+        public DbSet<AuditTeam> AuditTeams { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -20,11 +21,15 @@ namespace ProjectsBaseShared.Data
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             modelBuilder.Entity<Auditor>()
-                .Property(p => p.AuditorId)
+                .Property(a => a.AuditorId)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             modelBuilder.Entity<Client>()
-                .Property(p => p.ClientId)
+                .Property(c => c.ClientId)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Entity<AuditTeam>()
+                .Property(at => at.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }

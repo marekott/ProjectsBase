@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\AuditorsRepositoryTests.cs" />
+    <Compile Include="Data\AuditTeamRepositoryTest.cs" />
     <Compile Include="Data\ClientsRepositoryTests.cs" />
     <Compile Include="Mock\AuditorDataMock.cs" />
     <Compile Include="Mock\AuditTeamDataMock.cs" />

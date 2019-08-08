@@ -28,7 +28,7 @@ namespace ProjectsBaseSharedTests.Data
             AddTest();
             GetOnlyProjectTest();
             GetProjectAndRelatedTest();
-            GetProjectsAndRelated();
+            GetProjectsAndRelatedTest();
             UpdateTest();
             DeleteTest();
         }
@@ -90,7 +90,7 @@ namespace ProjectsBaseSharedTests.Data
             }
         }
 
-        private void GetProjectsAndRelated()
+        private void GetProjectsAndRelatedTest()
         {
             AddTest();
 
