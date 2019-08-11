@@ -16,6 +16,7 @@ namespace ProjectsBaseWebApplication
 
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
             builder.RegisterType<ProjectsRepository>().As<BaseRepository<Project>>();
+            builder.RegisterType<AuditTeamRepository>().As<BaseRepository<AuditTeam>>();
             builder.RegisterType<Context>();
 
             var container = builder.Build();

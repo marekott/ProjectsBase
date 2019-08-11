@@ -1,13 +1,35 @@
 ﻿using System;
+using System.Net;
 using System.Web.Mvc;
+using ProjectsBaseShared.Data;
+using ProjectsBaseShared.Models;
 
 namespace ProjectsBaseWebApplication.Controllers
 {
-    public class AuditTeamController
+    public class AuditTeamController : Controller
     {
+        private readonly BaseRepository<AuditTeam> _auditTeamRepository;
+
+        public AuditTeamController(BaseRepository<AuditTeam> auditTeamRepository)
+        {
+            _auditTeamRepository = auditTeamRepository;
+        }
         public ActionResult Add(Guid? guid)
         {
-            throw new NotImplementedException();
+            if (guid == null || guid == Guid.Empty)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var auditTeam = new AuditTeam()
+            {
+                ProjectId = (Guid)guid,
+                AuditorId = new Guid("fb772a3e-2eb9-e911-aa99-c83dd49b75c4")
+            };
+
+            _auditTeamRepository.Add(auditTeam);
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
