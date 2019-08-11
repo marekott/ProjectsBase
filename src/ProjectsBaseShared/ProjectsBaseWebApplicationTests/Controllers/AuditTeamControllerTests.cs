@@ -19,13 +19,14 @@ namespace ProjectsBaseWebApplicationTests.Controllers
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<BaseRepository<AuditTeam>>()
+                mock.Mock<IRepository<AuditTeam>>()
                     .Setup(auditTeamRepository => auditTeamRepository.Add(new AuditTeam()));
                 _auditTeamController = mock.Create<AuditTeamController>();
 
                 var result = _auditTeamController.Add(Guid.NewGuid());
 
-                Assert.IsInstanceOf<ViewResult>(result);
+                RedirectToRouteResult routeResult = result as RedirectToRouteResult;
+                Assert.True((string)routeResult?.RouteValues["action"] == "Index");
             }
         }
 
@@ -34,15 +35,14 @@ namespace ProjectsBaseWebApplicationTests.Controllers
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<BaseRepository<AuditTeam>>()
+                mock.Mock<IRepository<AuditTeam>>()
                     .Setup(auditTeamRepository => auditTeamRepository.Add(new AuditTeam()));
                 _auditTeamController = mock.Create<AuditTeamController>();
-                var badRequestStatusCode = new HttpStatusCodeResult(400, null);
 
                 var result = _auditTeamController.Add(null);
+                var resultStatusCode = result as HttpStatusCodeResult;
 
-                Assert.IsInstanceOf<HttpStatusCodeResult>(result);
-                Assert.AreEqual(badRequestStatusCode, result as HttpStatusCodeResult);
+                Assert.AreEqual(400,resultStatusCode?.StatusCode);
             }
         }
 
@@ -51,15 +51,14 @@ namespace ProjectsBaseWebApplicationTests.Controllers
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<BaseRepository<AuditTeam>>()
+                mock.Mock<IRepository<AuditTeam>>()
                     .Setup(auditTeamRepository => auditTeamRepository.Add(new AuditTeam()));
                 _auditTeamController = mock.Create<AuditTeamController>();
-                var badRequestStatusCode = new HttpStatusCodeResult(400, null);
 
                 var result = _auditTeamController.Add(Guid.Empty);
+                var resultStatusCode = result as HttpStatusCodeResult;
 
-                Assert.IsInstanceOf<HttpStatusCodeResult>(result);
-                Assert.AreEqual(badRequestStatusCode, result as HttpStatusCodeResult);
+                Assert.AreEqual(400, resultStatusCode?.StatusCode);
             }
         }
     }

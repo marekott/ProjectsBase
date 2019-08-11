@@ -21,7 +21,7 @@ namespace ProjectsBaseWebApplicationTests.Controllers
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<BaseRepository<Project>>()
+                mock.Mock<IRepository<Project>>()
                     .Setup(projectsRepository => projectsRepository.GetList())
                     .Returns(GetSampleProjects());
 
@@ -38,7 +38,7 @@ namespace ProjectsBaseWebApplicationTests.Controllers
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<BaseRepository<Project>>()
+                mock.Mock<IRepository<Project>>()
                     .Setup(projectsRepository => projectsRepository.GetList())
                     .Returns(GetSampleProjects());
 
@@ -55,7 +55,7 @@ namespace ProjectsBaseWebApplicationTests.Controllers
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<BaseRepository<Project>>()
+                mock.Mock<IRepository<Project>>()
                     .Setup(projectsRepository => projectsRepository.GetList())
                     .Returns(GetSampleProjects());
 
@@ -87,7 +87,7 @@ namespace ProjectsBaseWebApplicationTests.Controllers
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<BaseRepository<Project>>()
+                mock.Mock<IRepository<Project>>()
                     .Setup(projectsRepository => projectsRepository.Get(Guid.Empty, true))
                     .Returns(GetSampleProject());
 
@@ -104,7 +104,7 @@ namespace ProjectsBaseWebApplicationTests.Controllers
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<BaseRepository<Project>>()
+                mock.Mock<IRepository<Project>>()
                     .Setup(projectsRepository => projectsRepository.Get(Guid.Empty, true))
                     .Returns(GetSampleProject());
 

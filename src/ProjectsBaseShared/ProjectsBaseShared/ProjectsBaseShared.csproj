@@ -56,6 +56,7 @@
     <Compile Include="Data\ClientsRepository.cs" />
     <Compile Include="Data\Context.cs" />
     <Compile Include="Data\DatabaseInitializer.cs" />
+    <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\ProjectsRepository.cs" />
     <Compile Include="Models\Auditor.cs" />
     <Compile Include="Models\AuditTeam.cs" />

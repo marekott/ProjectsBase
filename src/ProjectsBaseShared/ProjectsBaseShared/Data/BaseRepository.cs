@@ -4,12 +4,9 @@ using System.Data.Entity;
 
 namespace ProjectsBaseShared.Data
 {
-    public abstract class BaseRepository<TEntity> where TEntity : class
+    public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected Context Context { get; }
-
-        protected BaseRepository()
-        { }
 
         protected BaseRepository(Context context)
         {

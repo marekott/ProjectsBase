@@ -9,10 +9,10 @@ namespace ProjectsBaseWebApplication.Controllers
     public class HomeController : Controller
     {
         //private readonly Context _context; //TODO do usunięcia jak ustali się gdzie ma być dispose
-        private readonly BaseRepository<Project> _projectsRepository;
+        private readonly IRepository<Project> _projectsRepository;
         //private bool _disposed; //TODO do usunięcia jak ustali się gdzie ma być dispose
 
-        public HomeController(BaseRepository<Project> projectsRepository)
+        public HomeController(IRepository<Project> projectsRepository)
         {
             //_context = new Context(); //TODO do usunięcia jak ustali się gdzie ma być dispose
             _projectsRepository = projectsRepository;

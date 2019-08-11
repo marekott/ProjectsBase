@@ -8,9 +8,9 @@ namespace ProjectsBaseWebApplication.Controllers
 {
     public class AuditTeamController : Controller
     {
-        private readonly BaseRepository<AuditTeam> _auditTeamRepository;
+        private readonly IRepository<AuditTeam> _auditTeamRepository;
 
-        public AuditTeamController(BaseRepository<AuditTeam> auditTeamRepository)
+        public AuditTeamController(IRepository<AuditTeam> auditTeamRepository)
         {
             _auditTeamRepository = auditTeamRepository;
         }
