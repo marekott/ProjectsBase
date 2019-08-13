@@ -24,7 +24,7 @@ namespace ProjectsBaseWebApplication.Controllers
             var auditTeam = new AuditTeam()
             {
                 ProjectId = (Guid)guid,
-                AuditorId = new Guid("fb772a3e-2eb9-e911-aa99-c83dd49b75c4")
+                AuditorId = new Guid("fb772a3e-2eb9-e911-aa99-c83dd49b75c4") //TODO info brane z danych logowania użytkownika
             };
 
             _auditTeamRepository.Add(auditTeam);

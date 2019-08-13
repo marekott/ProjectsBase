@@ -4,9 +4,10 @@ using System.Data.Entity;
 
 namespace ProjectsBaseShared.Data
 {
-    public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
+    public abstract class BaseRepository<TEntity> : IRepository<TEntity>, IDisposable where TEntity : class
     {
         protected Context Context { get; }
+        private bool _disposed;
 
         protected BaseRepository(Context context)
         {
@@ -32,6 +33,27 @@ namespace ProjectsBaseShared.Data
         {
             Context.Entry(entity).State = EntityState.Deleted;
             Context.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                Context.Dispose();
+            }
+
+            _disposed = true;
         }
     }
 }
