@@ -8,6 +8,14 @@ namespace ProjectsBaseShared.Data
     {
         protected override void Seed(Context context)
         {
+            var auditor = new Auditor()
+            {
+                AuditorName = "Marian",
+                AuditorSurname = "Testowy"
+            };
+
+            context.Auditors.Add(auditor);
+
             var clientPzu = new Client()
             {
                 ClientName = "PZU"

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Autofac.Extras.Moq;
 using NUnit.Framework;
@@ -23,11 +24,30 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                     .Setup(auditTeamRepository => auditTeamRepository.Add(new AuditTeam()));
                 _auditTeamController = mock.Create<AuditTeamController>();
 
+                mock.Mock<IRepository<Auditor>>()
+                    .Setup(auditorsRepository => auditorsRepository.GetList())
+                    .Returns(GetSampleAuditors());
+
                 var result = _auditTeamController.Add(Guid.NewGuid());
 
                 RedirectToRouteResult routeResult = result as RedirectToRouteResult;
                 Assert.True((string)routeResult?.RouteValues["action"] == "Index");
             }
+        }
+
+        private List<Auditor> GetSampleAuditors()
+        {
+            return new List<Auditor>()
+            {
+                new Auditor()
+                {
+                    AuditorId = Guid.NewGuid()
+                },
+                new Auditor()
+                {
+                    AuditorId = Guid.NewGuid()
+                },
+            };
         }
 
         [Test]

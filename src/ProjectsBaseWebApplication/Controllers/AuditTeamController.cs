@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using ProjectsBaseShared.Data;
@@ -9,10 +10,12 @@ namespace ProjectsBaseWebApplication.Controllers
     public class AuditTeamController : Controller
     {
         private readonly IRepository<AuditTeam> _auditTeamRepository;
+        private readonly IRepository<Auditor> _auditorRepository;
 
-        public AuditTeamController(IRepository<AuditTeam> auditTeamRepository)
+        public AuditTeamController(IRepository<AuditTeam> auditTeamRepository, IRepository<Auditor> auditorRepository)
         {
             _auditTeamRepository = auditTeamRepository;
+            _auditorRepository = auditorRepository;
         }
         public ActionResult Add(Guid? guid)
         {
@@ -24,10 +27,12 @@ namespace ProjectsBaseWebApplication.Controllers
             var auditTeam = new AuditTeam()
             {
                 ProjectId = (Guid)guid,
-                AuditorId = new Guid("fb772a3e-2eb9-e911-aa99-c83dd49b75c4") //TODO info brane z danych logowania użytkownika
+                AuditorId =  _auditorRepository.GetList().First().AuditorId //TODO info brane z danych logowania użytkownika
             };
 
             _auditTeamRepository.Add(auditTeam);
+
+            TempData["Message"] = "Your application was saved!";
 
             return RedirectToAction("Index", "Home");
         }
