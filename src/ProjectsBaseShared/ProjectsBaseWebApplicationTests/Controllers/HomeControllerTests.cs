@@ -6,6 +6,7 @@ using NUnit.Framework;
 using ProjectsBaseShared.Data;
 using ProjectsBaseShared.Models;
 using ProjectsBaseWebApplication.Controllers;
+using ProjectsBaseWebApplication.Models;
 using Assert = NUnit.Framework.Assert;
 
 
@@ -24,7 +25,6 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                 mock.Mock<IRepository<Project>>()
                     .Setup(projectsRepository => projectsRepository.GetList())
                     .Returns(GetSampleProjects());
-
                 _homeController = mock.Create<HomeController>();
 
                 var result = _homeController.Index();
@@ -41,7 +41,6 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                 mock.Mock<IRepository<Project>>()
                     .Setup(projectsRepository => projectsRepository.GetList())
                     .Returns(GetSampleProjects());
-
                 _homeController = mock.Create<HomeController>();
 
                 var result = _homeController.Index("Random name");
@@ -58,7 +57,6 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                 mock.Mock<IRepository<Project>>()
                     .Setup(projectsRepository => projectsRepository.GetList())
                     .Returns(GetSampleProjects());
-
                 _homeController = mock.Create<HomeController>();
 
                 var result = _homeController.Index("Mocked project1");
@@ -90,7 +88,6 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                 mock.Mock<IRepository<Project>>()
                     .Setup(projectsRepository => projectsRepository.Get(Guid.Empty, true))
                     .Returns(GetSampleProject());
-
                 _homeController = mock.Create<HomeController>();
 
                 var result = _homeController.ProjectDetails(Guid.NewGuid());
@@ -107,7 +104,6 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                 mock.Mock<IRepository<Project>>()
                     .Setup(projectsRepository => projectsRepository.Get(Guid.Empty, true))
                     .Returns(GetSampleProject());
-
                 _homeController = mock.Create<HomeController>();
 
                 var result = _homeController.ProjectDetails(null);
@@ -122,6 +118,72 @@ namespace ProjectsBaseWebApplicationTests.Controllers
             {
                 ProjectName = "Mocked Project"
             };
+        }
+
+        [Test]
+        public void AddTest()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                _homeController = mock.Create<HomeController>();
+
+                var result = _homeController.Add();
+
+                Assert.IsInstanceOf<ViewResult>(result);
+            }
+        }
+
+        [Test]
+        public void AddValidProjectTest()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                //mock.Mock<IValidator<Project>>() //pomimo mocka woła się normalna metoda
+                //    .Setup(v => v.Validate(new Project()))
+                //    .Returns(true);
+                mock.Mock<IRepository<Project>>()
+                    .Setup(projectsRepository => projectsRepository.Add(new Project()));
+                _homeController = mock.Create<HomeController>();
+
+                var result = _homeController.Add(new Project());
+
+                RedirectToRouteResult routeResult = result as RedirectToRouteResult;
+                Assert.AreEqual("Index", (string)routeResult?.RouteValues["action"]);
+            }
+        }
+
+        [Test]
+        public void AddInvalidProjectTest()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<IValidator<Project>>() 
+                    .Setup(v => v.Validate(new Project()))
+                    .Returns(false);
+                mock.Mock<IRepository<Project>>()
+                    .Setup(projectsRepository => projectsRepository.Add(new Project()));
+                _homeController = mock.Create<HomeController>();
+
+                var result = _homeController.Add(new Project());
+
+                Assert.IsInstanceOf<ViewResult>(result);
+            }
+        }
+
+        [Test]
+        public void AddProjectModelStateErrorTest()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<IRepository<Project>>()
+                    .Setup(projectsRepository => projectsRepository.Add(new Project()));
+                _homeController = mock.Create<HomeController>();
+                _homeController.ModelState.AddModelError("key", "error message");
+
+                var result = _homeController.Add(new Project());
+
+                Assert.IsInstanceOf<ViewResult>(result);
+            }
         }
     }
 }

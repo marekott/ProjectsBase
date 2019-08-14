@@ -5,6 +5,7 @@ using Autofac;
 using Autofac.Integration.Mvc;
 using ProjectsBaseShared.Data;
 using ProjectsBaseShared.Models;
+using ProjectsBaseWebApplication.Models;
 
 namespace ProjectsBaseWebApplication
 {
@@ -18,6 +19,7 @@ namespace ProjectsBaseWebApplication
             builder.RegisterType<ProjectsRepository>().As<IRepository<Project>>();
             builder.RegisterType<AuditTeamRepository>().As<IRepository<AuditTeam>>();
             builder.RegisterType<AuditorsRepository>().As<IRepository<Auditor>>();
+            builder.RegisterType<ProjectValidator>().As<IValidator<Project>>();
             builder.RegisterType<Context>();
 
             var container = builder.Build();
