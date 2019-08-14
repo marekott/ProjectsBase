@@ -54,8 +54,6 @@ namespace ProjectsBaseWebApplication.Controllers
         [HttpPost]
         public ActionResult Add(Project project)
         {
-            //IValidator<Project> projectValidator = new ProjectValidator();
-
             if (ModelState.IsValid && _projectValidator.Validate(project))
             {
                 _projectsRepository.Add(project);

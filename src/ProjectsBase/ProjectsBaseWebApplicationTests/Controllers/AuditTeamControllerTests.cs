@@ -20,17 +20,14 @@ namespace ProjectsBaseWebApplicationTests.Controllers
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<IRepository<AuditTeam>>()
-                    .Setup(auditTeamRepository => auditTeamRepository.Add(new AuditTeam()));
-                _auditTeamController = mock.Create<AuditTeamController>();
-
                 mock.Mock<IRepository<Auditor>>()
                     .Setup(auditorsRepository => auditorsRepository.GetList())
                     .Returns(GetSampleAuditors());
+                _auditTeamController = mock.Create<AuditTeamController>();
 
                 var result = _auditTeamController.Add(Guid.NewGuid());
 
-                RedirectToRouteResult routeResult = result as RedirectToRouteResult;
+                var routeResult = result as RedirectToRouteResult;
                 Assert.True((string)routeResult?.RouteValues["action"] == "Index");
             }
         }
@@ -55,13 +52,11 @@ namespace ProjectsBaseWebApplicationTests.Controllers
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<IRepository<AuditTeam>>()
-                    .Setup(auditTeamRepository => auditTeamRepository.Add(new AuditTeam()));
                 _auditTeamController = mock.Create<AuditTeamController>();
 
                 var result = _auditTeamController.Add(null);
-                var resultStatusCode = result as HttpStatusCodeResult;
 
+                var resultStatusCode = result as HttpStatusCodeResult;
                 Assert.AreEqual(400,resultStatusCode?.StatusCode);
             }
         }
@@ -71,13 +66,12 @@ namespace ProjectsBaseWebApplicationTests.Controllers
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<IRepository<AuditTeam>>()
-                    .Setup(auditTeamRepository => auditTeamRepository.Add(new AuditTeam()));
+
                 _auditTeamController = mock.Create<AuditTeamController>();
 
                 var result = _auditTeamController.Add(Guid.Empty);
-                var resultStatusCode = result as HttpStatusCodeResult;
 
+                var resultStatusCode = result as HttpStatusCodeResult;
                 Assert.AreEqual(400, resultStatusCode?.StatusCode);
             }
         }
