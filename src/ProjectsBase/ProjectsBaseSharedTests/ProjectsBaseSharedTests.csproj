@@ -6,7 +6,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EE97D1DB-4384-43AE-B8FB-A9E3F1A01D2F}</ProjectGuid>
+    <ProjectGuid>{0BF5F4BB-B3F4-4186-93BD-68ECFCAC0F20}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ProjectsBaseSharedTests</RootNamespace>
@@ -60,27 +60,48 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\AuditorsRepositoryTests.cs" />
-    <Compile Include="Data\AuditTeamRepositoryTest.cs" />
-    <Compile Include="Data\ClientsRepositoryTests.cs" />
-    <Compile Include="Mock\AuditorDataMock.cs" />
-    <Compile Include="Mock\AuditTeamDataMock.cs" />
-    <Compile Include="Mock\ClientDataMock.cs" />
-    <Compile Include="Data\ProjectsRepositoryTests.cs" />
-    <Compile Include="Mock\ProjectDataMock.cs" />
-    <Compile Include="Models\AuditorTests.cs" />
-    <Compile Include="Models\ClientTests.cs" />
-    <Compile Include="Models\ProjectTests.cs" />
+    <Compile Include="Data\AuditorsRepositoryTests.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Data\AuditTeamRepositoryTest.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Data\ClientsRepositoryTests.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Data\ProjectsRepositoryTests.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Mock\AuditorDataMock.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Mock\AuditTeamDataMock.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Mock\ClientDataMock.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Mock\ProjectDataMock.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Models\AuditorTests.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Models\ClientTests.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Models\ProjectTests.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\ProjectsBaseShared\ProjectsBaseShared.csproj">
-      <Project>{6b3d113b-5568-4717-8093-589117f8c1b8}</Project>
+      <Project>{86fd8ce0-b9cf-41f9-b35f-469710e7981f}</Project>
       <Name>ProjectsBaseShared</Name>
     </ProjectReference>
   </ItemGroup>

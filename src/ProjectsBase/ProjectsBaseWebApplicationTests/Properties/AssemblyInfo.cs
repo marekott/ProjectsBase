@@ -2,18 +2,18 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("ProjectsBaseSharedTests")]
+[assembly: AssemblyTitle("ProjectsBaseWebApplicationTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ProjectsBaseSharedTests")]
+[assembly: AssemblyProduct("ProjectsBaseWebApplicationTests")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
-[assembly: Guid("ee97d1db-4384-43ae-b8fb-a9e3f1a01d2f")]
+[assembly: Guid("e8fe980f-bdc0-449c-b25c-23827b538ab1")]
 
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
