@@ -52,6 +52,10 @@ textarea {
     margin-top: 20px !important;
 }
 
+.pt-3 {
+    padding-top: 3px !important;
+}
+
 .btn-eac-main {
     background: #00338D !important;
     color: #ffffff !important;

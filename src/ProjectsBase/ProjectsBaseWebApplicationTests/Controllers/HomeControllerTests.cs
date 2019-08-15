@@ -8,6 +8,7 @@ using ProjectsBaseShared.Data;
 using ProjectsBaseShared.Models;
 using ProjectsBaseWebApplication.Controllers;
 using ProjectsBaseWebApplication.Models;
+using ProjectsBaseWebApplication.ViewModels;
 using Assert = NUnit.Framework.Assert;
 
 
@@ -126,12 +127,67 @@ namespace ProjectsBaseWebApplicationTests.Controllers
         {
             using (var mock = AutoMock.GetLoose())
             {
+                mock.Mock<IRepository<Client>>()
+                    .Setup(c => c.GetList())
+                    .Returns(GetSampleClients());
                 _homeController = mock.Create<HomeController>();
 
                 var result = _homeController.Add();
 
                 Assert.IsInstanceOf<ViewResult>(result);
             }
+        }
+
+        [Test]
+        public void AddInvalidProjectTest()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<IValidator<Project>>()
+                    .Setup(v => v.Validate(It.IsAny<Project>()))
+                    .Returns(false);
+                mock.Mock<IRepository<Client>>()
+                    .Setup(c => c.GetList())
+                    .Returns(GetSampleClients());
+                _homeController = mock.Create<HomeController>();
+
+                var result = _homeController.Add(new AddProjectViewModel());
+
+                Assert.IsInstanceOf<ViewResult>(result);
+            }
+        }
+
+        [Test]
+        public void AddProjectModelStateErrorTest()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<IRepository<Client>>()
+                    .Setup(c => c.GetList())
+                    .Returns(GetSampleClients());
+                _homeController = mock.Create<HomeController>();
+                _homeController = mock.Create<HomeController>();
+                _homeController.ModelState.AddModelError("key", "error message");
+
+                var result = _homeController.Add(new AddProjectViewModel());
+
+                Assert.IsInstanceOf<ViewResult>(result);
+            }
+        }
+
+        private List<Client> GetSampleClients()
+        {
+            return new List<Client>()
+            {
+                new Client()
+                {
+                    ClientId = Guid.NewGuid()
+                },
+                new Client()
+                {
+                    ClientId = Guid.NewGuid()
+                }
+            };
         }
 
         [Test]
@@ -144,40 +200,10 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                     .Returns(true);
                 _homeController = mock.Create<HomeController>();
 
-                var result = _homeController.Add(new Project());
+                var result = _homeController.Add(new AddProjectViewModel());
 
                 var routeResult = result as RedirectToRouteResult;
                 Assert.AreEqual("Index", (string)routeResult?.RouteValues["action"]);
-            }
-        }
-
-        [Test]
-        public void AddInvalidProjectTest()
-        {
-            using (var mock = AutoMock.GetLoose())
-            {
-                mock.Mock<IValidator<Project>>() 
-                    .Setup(v => v.Validate(It.IsAny<Project>()))
-                    .Returns(false);
-                _homeController = mock.Create<HomeController>();
-
-                var result = _homeController.Add(new Project());
-
-                Assert.IsInstanceOf<ViewResult>(result);
-            }
-        }
-
-        [Test]
-        public void AddProjectModelStateErrorTest()
-        {
-            using (var mock = AutoMock.GetLoose())
-            {
-                _homeController = mock.Create<HomeController>();
-                _homeController.ModelState.AddModelError("key", "error message");
-
-                var result = _homeController.Add(new Project());
-
-                Assert.IsInstanceOf<ViewResult>(result);
             }
         }
     }

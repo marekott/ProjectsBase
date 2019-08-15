@@ -4,18 +4,21 @@ using System.Web.Mvc;
 using ProjectsBaseShared.Data;
 using ProjectsBaseShared.Models;
 using ProjectsBaseWebApplication.Models;
+using ProjectsBaseWebApplication.ViewModels;
 
 namespace ProjectsBaseWebApplication.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IRepository<Project> _projectsRepository;
+        private readonly IRepository<Client> _clientsRepository;
         private readonly IValidator<Project> _projectValidator;
 
-        public HomeController(IRepository<Project> projectsRepository, IValidator<Project> projectValidator)
+        public HomeController(IRepository<Project> projectsRepository, IRepository<Client> clientsRepository, IValidator<Project> projectValidator)
         {
             _projectsRepository = projectsRepository;
             _projectValidator = projectValidator;
+            _clientsRepository = clientsRepository;
         }
         
         public ActionResult Index()
@@ -48,19 +51,28 @@ namespace ProjectsBaseWebApplication.Controllers
 
         public ActionResult Add()
         {
-            return View();
+            var viewModel = new AddProjectViewModel();
+            viewModel.Init(_clientsRepository.GetList());
+            return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult Add(Project project)
+        public ActionResult Add(AddProjectViewModel viewModel) //TODO dodać walidację kliencką na polach z datą
         {
-            if (ModelState.IsValid && _projectValidator.Validate(project))
+            if (ModelState.IsValid)
             {
-                _projectsRepository.Add(project);
-                return RedirectToAction("Index");
+                if (_projectValidator.Validate(viewModel.Project))
+                {
+                    _projectsRepository.Add(viewModel.Project);
+                    TempData["Message"] = "Your project was successfully added!";
+                    return RedirectToAction("Index");
+                }
+                ModelState.AddModelError("", "Project end date should be the same or later than the start date. Both should be a future date.");
             }
 
-            return View(project);
+            viewModel.Init(_clientsRepository.GetList());
+
+            return View(viewModel);
         }
     }
 }

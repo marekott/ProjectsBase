@@ -19,6 +19,7 @@ namespace ProjectsBaseWebApplication
             builder.RegisterType<ProjectsRepository>().As<IRepository<Project>>();
             builder.RegisterType<AuditTeamRepository>().As<IRepository<AuditTeam>>();
             builder.RegisterType<AuditorsRepository>().As<IRepository<Auditor>>();
+            builder.RegisterType<ClientsRepository>().As<IRepository<Client>>();
             builder.RegisterType<ProjectValidator>().As<IValidator<Project>>();
             builder.RegisterType<Context>();
 
