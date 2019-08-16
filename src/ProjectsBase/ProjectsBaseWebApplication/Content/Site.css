@@ -35,42 +35,19 @@ textarea {
 .navbar-link {
     color: #ffffff !important;
 }
-
-.mb-10 {
-    margin-bottom: 10px !important;
-}
-
-.mb-20 {
-    margin-bottom: 20px !important;
-}
-
-.mt-10 {
-    margin-top: 10px !important;
-}
-
-.mt-20 {
-    margin-top: 20px !important;
-}
-
-.pt-3 {
-    padding-top: 3px !important;
-}
-
 .btn-eac-main {
     background: #00338D !important;
+    border-color: #00338d !important;
     color: #ffffff !important;
-    width: 345px !important;
-    height: 34px !important;
-    margin-top: 10px !important;
-    margin-bottom: 10px !important;
 }
 
 .btn-eac-secondary {
     background: #ffffff !important;
+    border-color: #00338d !important;
     color: #000000 !important;
-    width: 345px !important;
-    height: 34px !important;
-    margin-top: 10px !important;
-    margin-bottom: 10px !important;
 }
+
+/*body {
+    overflow-x: hidden;
+}*/
 
