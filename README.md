@@ -8,6 +8,5 @@ Web application is written in ASP.NET and uses Entity Framework to store and rea
 Models library is created with .Net Framework.
 
 ## To do
-1. Update Bootstrap to Bootstrap 4
-2. Login mechanism
-3. Separate project responsible for operating on database with REST API.
+1. Login mechanism
+2. Separate project responsible for operating on database with REST API.
