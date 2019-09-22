@@ -1,0 +1,30 @@
+﻿<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-link nav-link" })
+        </li>
+        <li class="nav-item active">
+            @Html.ActionLink("My Season", "Index", "Home", new { area = "" }, new { @class = "navbar-link nav-link" })
+        </li>
+        <li class="nav-item active">
+            @Html.ActionLink("My projects", "Index", "Home", new { area = "" }, new { @class = "navbar-link nav-link" })
+        </li>
+    </ul>
+    @if (Request.IsAuthenticated)
+    {
+        <span class="navbar-text pr-2 d-none d-lg-block">
+            Hello @User.Identity.Name!
+        </span>
+        using (Html.BeginForm("SignOut", "Account", FormMethod.Post, new { @class = "navbar-right" }))
+        {
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn-logging navbar-link nav-link">
+                Sign Out
+            </button>
+        }
+    }
+    else
+    {
+        @Html.ActionLink("Sign In", "SignIn", "Account", new { area = "" }, new { @class = "btn-logging navbar-link nav-link" })
+    }
+</div>

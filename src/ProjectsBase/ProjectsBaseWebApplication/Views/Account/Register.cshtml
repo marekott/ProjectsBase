@@ -1,0 +1,50 @@
+﻿@model ProjectsBaseWebApplication.ViewModels.AccountRegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "alert-danger" })
+
+
+    <div class="container-fluid h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email, "",new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password)
+                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", type = "password" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword)
+                    @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", type = "password" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-2 mb-0">
+        <div class="col-md-2 offset-md-4 mb-2 pb-0">
+            <button type="submit" class="btn btn-primary btn-eac-main btn-block">Register</button>
+        </div>
+        <div class="col-md-2 pb-0">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-eac-secondary btn-block">Cancel</a>
+        </div>
+    </div>
+}
+
+<p style="margin-top: 50px">
+    <strong>Already have an account?</strong> @Html.ActionLink("Click here", "SignIn") to sign-in with an existing account.
+</p>
+

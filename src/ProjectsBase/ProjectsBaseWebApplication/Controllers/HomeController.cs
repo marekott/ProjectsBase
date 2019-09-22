@@ -21,6 +21,7 @@ namespace ProjectsBaseWebApplication.Controllers
             _clientsRepository = clientsRepository;
         }
         
+        [AllowAnonymous]
         public ActionResult Index()
         {
             var projects = _projectsRepository.GetList();

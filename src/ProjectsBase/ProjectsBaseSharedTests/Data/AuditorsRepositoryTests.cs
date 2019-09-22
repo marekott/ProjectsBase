@@ -10,7 +10,6 @@ namespace ProjectsBaseSharedTests.Data
     [TestFixture]
     public class AuditorsRepositoryTests
     {
-       // private DataMock _dataMock;
         private AuditorDataMock _auditorDataMock;
 
         [SetUp]
@@ -25,7 +24,6 @@ namespace ProjectsBaseSharedTests.Data
         [Test]
         public void AuditorsRepositoryCrudTests()
         {
-            //_dataMock = new DataMock();
             _auditorDataMock = new AuditorDataMock();
             AddTest();
             GetOnlyAuditorTest();

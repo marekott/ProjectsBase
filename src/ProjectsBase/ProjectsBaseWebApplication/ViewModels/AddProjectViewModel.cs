@@ -8,7 +8,6 @@ namespace ProjectsBaseWebApplication.ViewModels
     {
         public Project Project { get; set; }
         public SelectList ClientsSelectList { get; set; }
-
         public void Init(List<Client> clients)
         {
             ClientsSelectList = new SelectList(clients, "ClientId", "ClientName");

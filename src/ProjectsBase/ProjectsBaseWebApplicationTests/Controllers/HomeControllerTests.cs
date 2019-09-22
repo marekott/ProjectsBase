@@ -166,7 +166,6 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                     .Setup(c => c.GetList())
                     .Returns(GetSampleClients());
                 _homeController = mock.Create<HomeController>();
-                _homeController = mock.Create<HomeController>();
                 _homeController.ModelState.AddModelError("key", "error message");
 
                 var result = _homeController.Add(new AddProjectViewModel());

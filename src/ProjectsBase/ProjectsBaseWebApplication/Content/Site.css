@@ -32,8 +32,13 @@ textarea {
     color: #ffffff !important;
 }
 
+.navbar-text {
+    color: #ffffff !important;
+}
+
 .navbar-link {
     color: #ffffff !important;
+    text-decoration: underline !important;
 }
 .btn-eac-main {
     background: #00338D !important;
@@ -45,5 +50,13 @@ textarea {
     background: #ffffff !important;
     border-color: #00338d !important;
     color: #000000 !important;
+}
+
+.btn-logging {
+    background: #00338D !important;
+    border: none;
+    padding: 0 !important;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
