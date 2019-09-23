@@ -16,8 +16,7 @@ namespace ProjectsBaseWebApplication.Controllers
         private readonly ApplicationSignInManager _signInManager;
         private readonly IAuthenticationManager _authenticationManager;
 
-        public AccountController(
-            ApplicationUserManager userManager,
+        public AccountController(ApplicationUserManager userManager,
             ApplicationSignInManager signInManager,
             IAuthenticationManager authenticationManager)
         {
@@ -45,14 +44,10 @@ namespace ProjectsBaseWebApplication.Controllers
 
                 if (createResult.Succeeded)
                 {
-                    var signInResult = await SignInUser(viewModel.Email, viewModel.Password);
-                    return CheckSignInResult(viewModel, signInResult);
+                    return await SignInUser(viewModel);
                 }
 
-                foreach (var error in createResult.Errors)
-                {
-                    ModelState.AddModelError("", error);
-                }
+                AddErrorsToModelState(createResult);
             }
 
             return View();
@@ -82,29 +77,12 @@ namespace ProjectsBaseWebApplication.Controllers
             };
         }
 
-        private async Task<SignInStatus> SignInUser(string login, string password, bool rememberMe = false)
+        private async Task<ActionResult> SignInUser(IAccountViewModel viewModel, bool rememberMe = false)
         {
-            return await _signInManager.PasswordSignInAsync(
-                login, password, rememberMe, false); //TODO do sprawdzenia ostatni parametr
-        }
+            var result = await _signInManager.PasswordSignInAsync(
+                viewModel.Email, viewModel.Password, rememberMe, false);
 
-        [AllowAnonymous]
-        public ActionResult SignIn()
-        {
-            return View();
-        }
-
-        [HttpPost, ValidateAntiForgeryToken, AllowAnonymous]
-        public async Task<ActionResult> SignIn(AccountSignInViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-
-            var result = await SignInUser(viewModel.Email, viewModel.Password, viewModel.RememberMe);
-
-            return CheckSignInResult(viewModel, result);
+            return CheckSignInResult(null, result);
         }
 
         private ActionResult CheckSignInResult(IAccountViewModel viewModel, SignInStatus result)
@@ -123,6 +101,31 @@ namespace ProjectsBaseWebApplication.Controllers
                 default:
                     throw new Exception("Unexpected Microsoft.AspNet.Identity.Owin.SignInStatus enum value: " + result);
             }
+        }
+
+        private void AddErrorsToModelState(IdentityResult createResult)
+        {
+            foreach (var error in createResult.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
+        [AllowAnonymous]
+        public ActionResult SignIn()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken, AllowAnonymous]
+        public async Task<ActionResult> SignIn(AccountSignInViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            return await SignInUser(viewModel, viewModel.RememberMe);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
