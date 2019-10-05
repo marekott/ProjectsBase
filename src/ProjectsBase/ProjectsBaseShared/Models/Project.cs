@@ -14,6 +14,8 @@ namespace ProjectsBaseShared.Models
         [DisplayName("End date")] public DateTime ProjectEndDate { get; set; }
         public Client Client { get; set; }
         public ICollection<AuditTeam> Auditors { get; set; }
+        [Required] public string UserId { get; set; }
+        public User User { get; set; }
 
         public Project()
         {

@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using NUnit.Framework;
 using ProjectsBaseShared.Data;
+using ProjectsBaseShared.Models;
+using ProjectsBaseShared.Security;
+using ProjectsBaseSharedTests.Helpers;
 using ProjectsBaseSharedTests.Mock;
 
 namespace ProjectsBaseSharedTests.Data
@@ -39,6 +44,16 @@ namespace ProjectsBaseSharedTests.Data
             {
                 var projectsRepository = new ProjectsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
+
+                var userStore = new UserStore<User>(context);
+                var userManager = new ApplicationUserManager(userStore);
+
+                var randomUser = UserGenerator.GenerateUser();
+
+                userManager.Create(randomUser, UserGenerator.RandomString());
+
+                _projectDataMock.Project.UserId = randomUser.Id;
+                _projectDataMock.Project.User = randomUser;
 
                 projectsRepository.Add(_projectDataMock.Project);
 
@@ -92,7 +107,8 @@ namespace ProjectsBaseSharedTests.Data
 
         private void GetProjectsAndRelatedTest()
         {
-            AddTest();
+            var newProject = new ProjectDataMock();
+            AddTest(newProject);
 
             using (var context = new Context())
             {
@@ -104,6 +120,29 @@ namespace ProjectsBaseSharedTests.Data
                 Assert.True(projects.Count > 1, "GetProjectsAndRelated returned only one project.");
                 Assert.True(projects.All(p => p.Client != null), "GetProjectsAndRelated does not return related clients.");
                 Assert.True(projects.All(p => p.Auditors.Count != 0), "GetProjectsAndRelated does not return related auditors.");
+            }
+        }
+
+        private void AddTest(ProjectDataMock projectMock)
+        {
+            using (var context = new Context())
+            {
+                var projectsRepository = new ProjectsRepository(context);
+                context.Database.Log = (message) => Debug.WriteLine(message);
+
+                var userStore = new UserStore<User>(context);
+                var userManager = new ApplicationUserManager(userStore);
+
+                var randomUser = UserGenerator.GenerateUser();
+
+                userManager.Create(randomUser, UserGenerator.RandomString());
+
+                projectMock.Project.UserId = randomUser.Id;
+                projectMock.Project.User = randomUser;
+
+                projectsRepository.Add(projectMock.Project);
+
+                Assert.AreNotEqual(Guid.Empty, projectMock.ProjectId, "Empty guid was return");
             }
         }
 

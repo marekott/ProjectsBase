@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Web;
 using System.Web.Mvc;
 using Autofac.Extras.Moq;
+using Moq;
 using NUnit.Framework;
 using ProjectsBaseShared.Data;
 using ProjectsBaseShared.Models;
@@ -23,7 +27,21 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                 mock.Mock<IRepository<Auditor>>()
                     .Setup(auditorsRepository => auditorsRepository.GetList())
                     .Returns(GetSampleAuditors());
+
+                var identity = new GenericIdentity("test_user");
+                identity.AddClaim(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", Guid.NewGuid().ToString()));
+                var principal = new GenericPrincipal(identity, new[] { "user" });
+
+                var httpCtxStub = new Mock<HttpContextBase>();
+                httpCtxStub.SetupGet(p => p.User).Returns(principal);
+                var controllerCtx = new ControllerContext
+                {
+                    HttpContext = httpCtxStub.Object
+
+                };
+
                 _auditTeamController = mock.Create<AuditTeamController>();
+                _auditTeamController.ControllerContext = controllerCtx;
 
                 var result = _auditTeamController.Add(Guid.NewGuid());
 

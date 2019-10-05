@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using ProjectsBaseShared.Data;
 using ProjectsBaseShared.Models;
 
@@ -10,14 +11,12 @@ namespace ProjectsBaseWebApplication.Controllers
     public class AuditTeamController : Controller
     {
         private readonly IRepository<AuditTeam> _auditTeamRepository;
-        private readonly IRepository<Auditor> _auditorRepository;
 
         public AuditTeamController(IRepository<AuditTeam> auditTeamRepository, IRepository<Auditor> auditorRepository)
         {
             _auditTeamRepository = auditTeamRepository;
-            _auditorRepository = auditorRepository;
         }
-        public ActionResult Add(Guid? guid)
+        public ActionResult Add(Guid? guid) //TODO nie można aplikować na swój projekt
         {
             if (guid == null || guid == Guid.Empty)
             {
@@ -27,7 +26,7 @@ namespace ProjectsBaseWebApplication.Controllers
             var auditTeam = new AuditTeam()
             {
                 ProjectId = (Guid)guid,
-                AuditorId =  _auditorRepository.GetList().First().AuditorId //TODO info brane z danych logowania użytkownika
+                AuditorId = Guid.Parse(User.Identity.GetUserId())
             };
 
             _auditTeamRepository.Add(auditTeam);

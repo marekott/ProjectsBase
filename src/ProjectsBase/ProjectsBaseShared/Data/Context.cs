@@ -28,10 +28,6 @@ namespace ProjectsBaseShared.Data
                 .Property(p => p.ProjectId)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            modelBuilder.Entity<Auditor>()
-                .Property(a => a.AuditorId)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-
             modelBuilder.Entity<Client>()
                 .Property(c => c.ClientId)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);

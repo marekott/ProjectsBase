@@ -21,10 +21,26 @@ namespace ProjectsBaseSharedTests.Mock
                 ProjectEndDate = ProjectEndDate,
                 
             };
+            // ReSharper disable once ArrangeThisQualifier
             Project.Client = new ClientDataMock(this.Project).Client; //must be outside of Project initializer or this will be null
-            var auditTeamMember = new AuditTeam() { Auditor = new Auditor() { AuditorName = "test", AuditorSurname = "test" } };
-            Project.Auditors.Add(auditTeamMember);
-            Project.Auditors.Add(auditTeamMember);
+            Project.Auditors.Add(CreateNewAuditTeam());
+            Project.Auditors.Add(CreateNewAuditTeam());
+        }
+
+        private AuditTeam CreateNewAuditTeam()
+        {
+            var guid = Guid.NewGuid();
+            return new AuditTeam()
+            {
+                Auditor = new Auditor()
+                {
+                    AuditorName = "test",
+                    AuditorSurname = "test",
+                    AuditorId = guid
+
+                },
+                AuditorId = guid
+            };
         }
 
         public ProjectDataMock(ClientDataMock clientData)
@@ -36,9 +52,8 @@ namespace ProjectsBaseSharedTests.Mock
                 ProjectEndDate = ProjectEndDate,
                 Client = clientData.Client,
             };
-            var auditTeamMember = new AuditTeam() { Auditor = new Auditor() { AuditorName = "test", AuditorSurname = "test" } };
-            Project.Auditors.Add(auditTeamMember);
-            Project.Auditors.Add(auditTeamMember);
+            Project.Auditors.Add(CreateNewAuditTeam());
+            Project.Auditors.Add(CreateNewAuditTeam());
         }
 
         public ProjectDataMock(AuditorDataMock auditorDataMock)
@@ -51,6 +66,7 @@ namespace ProjectsBaseSharedTests.Mock
                 ProjectEndDate = ProjectEndDate,
 
             };
+            // ReSharper disable once ArrangeThisQualifier
             Project.Client = new ClientDataMock(this.Project).Client; //must be outside of Project initializer or this will be null
             var auditTeamMember = new AuditTeam() { Auditor = auditorDataMock.Auditor };
             Project.Auditors.Add(auditTeamMember);

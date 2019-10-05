@@ -1,20 +1,53 @@
 ﻿using System;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using ProjectsBaseShared.Models;
+using ProjectsBaseShared.Security;
 
 namespace ProjectsBaseShared.Data
 {
     internal class DatabaseInitializer : DropCreateDatabaseIfModelChanges<Context>
     {
+#if DEBUG
         protected override void Seed(Context context)
         {
-            var auditor = new Auditor()
+            var userStore = new UserStore<User>(context);
+            var userManager = new ApplicationUserManager(userStore);
+
+            var userMarian = new User
             {
-                AuditorName = "Marian",
-                AuditorSurname = "Testowy"
+                UserName = "mariantestowy@eac.com",
+                Email = "mariantestowy@eac.com"
             };
 
-            context.Auditors.Add(auditor);
+            userManager.Create(userMarian, "marian123");
+
+            var userJan = new User
+            {
+                UserName = "jankowalski@eac.com",
+                Email = "jankowalski@eac.com"
+            };
+
+            userManager.Create(userJan, "jan123");
+
+            var auditorMarian = new Auditor()
+            {
+                AuditorName = "Marian",
+                AuditorSurname = "Testowy",
+                AuditorId = Guid.Parse(userMarian.Id)
+            };
+
+            context.Auditors.Add(auditorMarian);
+
+            var auditorJan = new Auditor()
+            {
+                AuditorName = "Jan",
+                AuditorSurname = "Kowalski",
+                AuditorId = Guid.Parse(userJan.Id)
+            };
+
+            context.Auditors.Add(auditorJan);
 
             var clientPzu = new Client()
             {
@@ -36,7 +69,9 @@ namespace ProjectsBaseShared.Data
                 ProjectName = "PZU - Audit",
                 ProjectStartDate = DateTime.Now,
                 ProjectEndDate = DateTime.Now.AddMonths(2),
-                Client = clientPzu
+                Client = clientPzu,
+                UserId = userMarian.Id,
+                User = userMarian
             };
             context.Projects.Add(projectPzu);
 
@@ -45,7 +80,9 @@ namespace ProjectsBaseShared.Data
                 ProjectName = "Pko - Audit",
                 ProjectStartDate = DateTime.Now,
                 ProjectEndDate = DateTime.Now.AddMonths(2),
-                Client = clientPko
+                Client = clientPko,
+                UserId = userMarian.Id,
+                User = userMarian
             };
             context.Projects.Add(projectPko);
 
@@ -54,11 +91,14 @@ namespace ProjectsBaseShared.Data
                 ProjectName = "Ing - Audit",
                 ProjectStartDate = DateTime.Now,
                 ProjectEndDate = DateTime.Now.AddMonths(2),
-                Client = clientIng
+                Client = clientIng,
+                UserId = userJan.Id,
+                User = userJan
             };
             context.Projects.Add(projectIng);
 
             context.SaveChanges();
         }
+#endif
     }
 }

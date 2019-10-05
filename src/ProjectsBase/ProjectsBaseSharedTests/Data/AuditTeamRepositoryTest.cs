@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using NUnit.Framework;
 using ProjectsBaseShared.Data;
+using ProjectsBaseShared.Models;
+using ProjectsBaseShared.Security;
+using ProjectsBaseSharedTests.Helpers;
 using ProjectsBaseSharedTests.Mock;
 
 namespace ProjectsBaseSharedTests.Data
@@ -41,6 +46,16 @@ namespace ProjectsBaseSharedTests.Data
                 context.Database.Log = (message) => Debug.WriteLine(message);
 
                 var project = new ProjectDataMock();
+
+                var userStore = new UserStore<User>(context);
+                var userManager = new ApplicationUserManager(userStore);
+
+                var randomUser = UserGenerator.GenerateUser();
+
+                userManager.Create(randomUser, UserGenerator.RandomString());
+
+                project.Project.UserId = randomUser.Id;
+                project.Project.User = randomUser;
 
                 projectsRepository.Add(project.Project);
 
@@ -110,6 +125,16 @@ namespace ProjectsBaseSharedTests.Data
             {
                 var projectsRepository = new ProjectsRepository(context);
                 context.Database.Log = (message) => Debug.WriteLine(message);
+
+                var userStore = new UserStore<User>(context);
+                var userManager = new ApplicationUserManager(userStore);
+
+                var randomUser = UserGenerator.GenerateUser();
+
+                userManager.Create(randomUser, UserGenerator.RandomString());
+
+                newProject.Project.UserId = randomUser.Id;
+                newProject.Project.User = randomUser;
 
                 projectsRepository.Add(newProject.Project);
 

@@ -91,6 +91,7 @@
     <Compile Include="Data\AuditTeamRepositoryTest.cs" />
     <Compile Include="Data\ClientsRepositoryTests.cs" />
     <Compile Include="Data\ProjectsRepositoryTests.cs" />
+    <Compile Include="Helpers\UserGenerator.cs" />
     <Compile Include="Mock\AuditorDataMock.cs" />
     <Compile Include="Mock\AuditTeamDataMock.cs" />
     <Compile Include="Mock\ClientDataMock.cs" />

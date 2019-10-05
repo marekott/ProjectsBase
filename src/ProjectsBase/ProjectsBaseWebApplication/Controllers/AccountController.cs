@@ -32,7 +32,7 @@ namespace ProjectsBaseWebApplication.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken, AllowAnonymous]
-        public async Task<ActionResult> Register(AccountRegisterViewModel viewModel)
+        public async Task<ActionResult> Register(AccountRegisterViewModel viewModel) //TODO jednocześnie tworzenie rekordu w Auditor
         {
             await CheckIfEmailIsInUse(viewModel.Email);
 

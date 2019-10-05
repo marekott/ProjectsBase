@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using ProjectsBaseShared.Data;
 using ProjectsBaseShared.Models;
 using ProjectsBaseWebApplication.Models;
@@ -14,13 +15,14 @@ namespace ProjectsBaseWebApplication.Controllers
         private readonly IRepository<Client> _clientsRepository;
         private readonly IValidator<Project> _projectValidator;
 
-        public HomeController(IRepository<Project> projectsRepository, IRepository<Client> clientsRepository, IValidator<Project> projectValidator)
+        public HomeController(IRepository<Project> projectsRepository, IRepository<Client> clientsRepository,
+            IValidator<Project> projectValidator)
         {
             _projectsRepository = projectsRepository;
             _projectValidator = projectValidator;
             _clientsRepository = clientsRepository;
         }
-        
+
         [AllowAnonymous]
         public ActionResult Index()
         {
@@ -28,7 +30,8 @@ namespace ProjectsBaseWebApplication.Controllers
 
             return View(projects);
         }
-        [HttpPost]
+
+        [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Index(string projectName)
         {
             var projects = _projectsRepository.GetList()
@@ -38,6 +41,7 @@ namespace ProjectsBaseWebApplication.Controllers
 
             return View(projects);
         }
+
         public ActionResult ProjectDetails(Guid? id)
         {
             if (id == null)
@@ -45,7 +49,7 @@ namespace ProjectsBaseWebApplication.Controllers
                 return HttpNotFound();
             }
 
-            var selectedOffer = _projectsRepository.Get((Guid)id);
+            var selectedOffer = _projectsRepository.Get((Guid) id);
 
             return View(selectedOffer);
         }
@@ -53,13 +57,16 @@ namespace ProjectsBaseWebApplication.Controllers
         public ActionResult Add()
         {
             var viewModel = new AddProjectViewModel();
+            viewModel.Project.UserId = User.Identity.GetUserId();
             viewModel.Init(_clientsRepository.GetList());
             return View(viewModel);
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Add(AddProjectViewModel viewModel) //TODO dodać walidację kliencką na polach z datą
         {
+            viewModel.Project.UserId = User.Identity.GetUserId();
+
             if (ModelState.IsValid)
             {
                 if (_projectValidator.Validate(viewModel.Project))
@@ -68,12 +75,25 @@ namespace ProjectsBaseWebApplication.Controllers
                     TempData["Message"] = "Your project was successfully added!";
                     return RedirectToAction("Index");
                 }
-                ModelState.AddModelError("", "Project end date should be the same or later than the start date. Both should be a future date.");
+
+                ModelState.AddModelError("",
+                    "Project end date should be the same or later than the start date. Both should be a future date.");
             }
 
             viewModel.Init(_clientsRepository.GetList());
 
             return View(viewModel);
+        }
+
+        public ActionResult MyProjects()
+        {
+            var userId = User.Identity.GetUserId();
+
+            var myProjects = _projectsRepository.GetList()
+                .Where(p => p.UserId == userId)
+                .ToList();
+
+            return View(myProjects);
         }
     }
 }

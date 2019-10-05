@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using ProjectsBaseShared.Models;
 
 namespace ProjectsBaseSharedTests.Mock
@@ -17,7 +16,6 @@ namespace ProjectsBaseSharedTests.Mock
                 ClientName = ClientName
             };
             Client.Projects.Add(new ProjectDataMock(this).Project);
-            Client.Projects.First().Auditors.Add(new AuditTeam() { Auditor = new Auditor() { AuditorName = "test", AuditorSurname = "test" } });
         }
 
         public ClientDataMock(Project projectDataMock)
@@ -27,7 +25,6 @@ namespace ProjectsBaseSharedTests.Mock
                 ClientName = ClientName
             };
             Client.Projects.Add(projectDataMock);
-            Client.Projects.First().Auditors.Add(new AuditTeam() { Auditor = new Auditor() {AuditorName = "test", AuditorSurname = "test" } });
         }
     }
 }

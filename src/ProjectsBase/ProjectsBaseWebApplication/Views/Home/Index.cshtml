@@ -57,39 +57,4 @@
     </div>
 }
 
-<div class="row">
-    <div class="col-md-12">
-        @if (@Model != null && @Model.Count > 0)
-        {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col" class="d-none d-sm-table-cell">Starting Date</th>
-                        <th scope="col" class="d-none d-sm-table-cell">Closing Date</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (int i = 0; i < @Model.Count; i++)
-                    {
-                        <tr>
-                            <td>@(i + 1)</td>
-                            <td>@Model[i].ProjectName</td>
-                            <td class="d-none d-sm-table-cell">@Model[i].ProjectStartDate.ToShortDateString()</td>
-                            <td class="d-none d-sm-table-cell">@Model[i].ProjectEndDate.ToShortDateString()</td>
-                            <td><input class="btn btn-link" type="button" value="Details" onclick="location.href = '@Url.Action("ProjectDetails", new {id = @Model[i].ProjectId})'"/></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        @if (@Model == null || @Model.Count == 0)
-        {
-            <div class="col-md-12 text-center">
-                <h3>It seems that there aren't any open projects yet. Try again later.</h3>
-            </div>
-        }
-    </div>
-</div>
+@Html.Partial("_ProjectsTable")

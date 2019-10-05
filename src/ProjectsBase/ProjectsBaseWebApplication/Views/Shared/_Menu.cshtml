@@ -7,7 +7,7 @@
             @Html.ActionLink("My Season", "Index", "Home", new { area = "" }, new { @class = "navbar-link nav-link" })
         </li>
         <li class="nav-item active">
-            @Html.ActionLink("My projects", "Index", "Home", new { area = "" }, new { @class = "navbar-link nav-link" })
+            @Html.ActionLink("My projects", "MyProjects", "Home", new { area = "" }, new { @class = "navbar-link nav-link" })
         </li>
     </ul>
     @if (Request.IsAuthenticated)

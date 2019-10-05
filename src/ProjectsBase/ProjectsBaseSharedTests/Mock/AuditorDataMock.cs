@@ -16,9 +16,10 @@ namespace ProjectsBaseSharedTests.Mock
             Auditor = new Auditor()
             {
                 AuditorName = AuditorName,
-                AuditorSurname = AuditorSurname
+                AuditorSurname = AuditorSurname,
+                AuditorId = Guid.NewGuid()
             };
-            Auditor.Projects.Add(new AuditTeam(){Auditor = Auditor});
+            Auditor.Projects.Add(new AuditTeam(){Auditor = Auditor, AuditorId = Auditor.AuditorId } );
             Auditor.Projects.First().Project = new ProjectDataMock(this).Project;
             Auditor.Projects.First().Project.Client = new ClientDataMock(Auditor.Projects.First().Project).Client;
         }

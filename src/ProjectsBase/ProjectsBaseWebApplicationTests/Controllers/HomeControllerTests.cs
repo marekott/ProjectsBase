@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Web;
 using System.Web.Mvc;
 using Autofac.Extras.Moq;
 using Moq;
@@ -130,7 +133,21 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                 mock.Mock<IRepository<Client>>()
                     .Setup(c => c.GetList())
                     .Returns(GetSampleClients());
+
+                var identity = new GenericIdentity("test_user");
+                identity.AddClaim(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", Guid.NewGuid().ToString()));
+                var principal = new GenericPrincipal(identity, new[] { "user" });
+
+                var httpCtxStub = new Mock<HttpContextBase>();
+                httpCtxStub.SetupGet(p => p.User).Returns(principal);
+                var controllerCtx = new ControllerContext
+                {
+                    HttpContext = httpCtxStub.Object
+
+                };
+
                 _homeController = mock.Create<HomeController>();
+                _homeController.ControllerContext = controllerCtx;
 
                 var result = _homeController.Add();
 
@@ -149,9 +166,28 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                 mock.Mock<IRepository<Client>>()
                     .Setup(c => c.GetList())
                     .Returns(GetSampleClients());
-                _homeController = mock.Create<HomeController>();
 
-                var result = _homeController.Add(new AddProjectViewModel());
+                var identity = new GenericIdentity("test_user");
+                identity.AddClaim(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", Guid.NewGuid().ToString()));
+                var principal = new GenericPrincipal(identity, new[] { "user" });
+
+                var httpCtxStub = new Mock<HttpContextBase>();
+                httpCtxStub.SetupGet(p => p.User).Returns(principal);
+                var controllerCtx = new ControllerContext
+                {
+                    HttpContext = httpCtxStub.Object
+
+                };
+
+                _homeController = mock.Create<HomeController>();
+                _homeController.ControllerContext = controllerCtx;
+
+                var viewModel = new AddProjectViewModel()
+                {
+                    Project = new Project()
+                };
+
+                var result = _homeController.Add(viewModel);
 
                 Assert.IsInstanceOf<ViewResult>(result);
             }
@@ -165,10 +201,29 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                 mock.Mock<IRepository<Client>>()
                     .Setup(c => c.GetList())
                     .Returns(GetSampleClients());
+
+                var identity = new GenericIdentity("test_user");
+                identity.AddClaim(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", Guid.NewGuid().ToString()));
+                var principal = new GenericPrincipal(identity, new[] { "user" });
+
+                var httpCtxStub = new Mock<HttpContextBase>();
+                httpCtxStub.SetupGet(p => p.User).Returns(principal);
+                var controllerCtx = new ControllerContext
+                {
+                    HttpContext = httpCtxStub.Object
+
+                };
+
                 _homeController = mock.Create<HomeController>();
                 _homeController.ModelState.AddModelError("key", "error message");
+                _homeController.ControllerContext = controllerCtx;
 
-                var result = _homeController.Add(new AddProjectViewModel());
+                var viewModel = new AddProjectViewModel()
+                {
+                    Project = new Project()
+                };
+
+                var result = _homeController.Add(viewModel);
 
                 Assert.IsInstanceOf<ViewResult>(result);
             }
@@ -197,12 +252,61 @@ namespace ProjectsBaseWebApplicationTests.Controllers
                 mock.Mock<IValidator<Project>>()
                     .Setup(v => v.Validate(It.IsAny <Project>()))
                     .Returns(true);
-                _homeController = mock.Create<HomeController>();
 
-                var result = _homeController.Add(new AddProjectViewModel());
+                var identity = new GenericIdentity("test_user");
+                identity.AddClaim(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", Guid.NewGuid().ToString()));
+                var principal = new GenericPrincipal(identity, new[] { "user" });
+
+                var httpCtxStub = new Mock<HttpContextBase>();
+                httpCtxStub.SetupGet(p => p.User).Returns(principal);
+                var controllerCtx = new ControllerContext
+                {
+                    HttpContext = httpCtxStub.Object
+
+                };
+
+                _homeController = mock.Create<HomeController>();
+                _homeController.ControllerContext = controllerCtx;
+
+                var viewModel = new AddProjectViewModel()
+                {
+                    Project = new Project()
+                };
+
+                var result = _homeController.Add(viewModel);
 
                 var routeResult = result as RedirectToRouteResult;
                 Assert.AreEqual("Index", (string)routeResult?.RouteValues["action"]);
+            }
+        }
+
+        [Test]
+        public void MyProjectsTest()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<IRepository<Project>>()
+                    .Setup(projectsRepository => projectsRepository.GetList())
+                    .Returns(GetSampleProjects());
+
+                var identity = new GenericIdentity("test_user");
+                identity.AddClaim(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", Guid.NewGuid().ToString()));
+                var principal = new GenericPrincipal(identity, new[] { "user" });
+
+                var httpCtxStub = new Mock<HttpContextBase>();
+                httpCtxStub.SetupGet(p => p.User).Returns(principal);
+                var controllerCtx = new ControllerContext
+                {
+                    HttpContext = httpCtxStub.Object
+
+                };
+
+                _homeController = mock.Create<HomeController>();
+                _homeController.ControllerContext = controllerCtx;
+
+                var result = _homeController.MyProjects();
+
+                Assert.IsInstanceOf<ViewResult>(result);
             }
         }
     }
