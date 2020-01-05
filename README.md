@@ -7,6 +7,8 @@ in which particular projects they want to participate.
 Web application is written in ASP.NET and uses Entity Framework to store and read data from a database. 
 Models library is created with .Net Framework.
 
+## Getting started
+Website isn't hosted yet on any server. To use it, download repository and host it via Visual Studio (IIS). Be sure to install localdb in order to use this application locally.
+
 ## To do
-1. Login mechanism
-2. Separate project responsible for operating on database with REST API.
+1. Separate project responsible for operating on database with REST API.
